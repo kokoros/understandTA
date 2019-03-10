@@ -14,6 +14,10 @@ class User(models.Model):
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=32,choices=gender, default="不详")
+    petname = models.CharField(max_length=128,default='不详')
+    pet_type = models.CharField(max_length=128,default="不详")
+    intro = models.CharField(max_length=1024,default="你猜")
+    photo = models.CharField(max_length=1024,default="太帅无法显示")
     c_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
