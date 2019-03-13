@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}主页{% endblock %}
 {% block content %}
-    <h1>欢迎回家~</h1>
+    {% if request.session.is_login %}
+    <h1>你好呀,{{ request.session.user_name }}~欢迎回来</h1>
+    {% else %}
+    <h1>尚未登录</h1>
+    {% endif %}
 {% endblock %}
