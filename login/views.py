@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from login import models
 from login import forms
+import hashlib
 
 # Create your views here.
 
@@ -19,7 +20,8 @@ def login(request):
             password = login_form.cleaned_data['password']
             try:
                 user = models.User.objects.get(name=username)
-                if user.password == password:
+                #哈希值和数据库值对比
+                if user.password == hash_code(password):
                     request.session['is_login'] = True
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
@@ -64,7 +66,8 @@ def register(request):
             #一切都ok时
             new_user = models.User()
             new_user.name = username 
-            new_user.password = password1
+            #使用加密密码
+            new_user.password = hash_code(password1)
             new_user.email = email 
             new_user.sex = sex 
             new_user.pet_type = pet_type 
@@ -84,3 +87,11 @@ def logout(request):
     #清空session中的内容
     request.session.flush()
     return redirect("/index/")
+
+#密码哈希值加密
+def hash_code(s,salt='mysite'):
+    #sha256算法加密
+    h = hashlib.sha256()
+    s += salt 
+    h.update(s.encode())
+    return h.hexdigest()
