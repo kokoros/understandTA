@@ -52,6 +52,9 @@ def register(request):
         if password1 != password2:
             message = "两次输入的密码不同"
             return render(request, 'login/register.html', locals())
+        elif len(password1) < 6 or len(password1) > 12:
+            message = "密码长度在6-12个字符间"
+            return render(request, 'login/register.html', locals())
         else:
             same_name_user = models.User.objects.filter(name=username)
             #如果用户名存在
@@ -123,6 +126,9 @@ def change_password(request):
             return render(request, 'login/change_password.html', locals())
         elif hash_code(old_password) == hash_code(new_password1):
             message = "新老密码不能相同"
+            return render(request, 'login/change_password.html', locals())
+        elif len(new_password1) < 6 or len(new_password1) > 12:
+            message = "密码长度在6-12个字符间"
             return render(request, 'login/change_password.html', locals())
         else:
             try:

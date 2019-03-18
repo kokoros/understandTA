@@ -21,11 +21,11 @@ class RegisterForm(forms.Form):
     
     email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'form-control'}))
 
-    sex = forms.ChoiceField(label="性别",choices=gender)
-    petname = forms.CharField(label="宠物名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
-    pet_type = forms.CharField(label="宠物种类",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
-    intro = forms.CharField(label="简介",max_length=1024,widget=forms.TextInput(attrs={'class':'form-control'}))
-    photo = forms.CharField(label="头像",max_length=1024,widget=forms.TextInput(attrs={'class':'form-control'}))
+    sex = forms.ChoiceField(label="性别",choices=gender,initial="不详")
+    petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
+    pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
+    intro = forms.CharField(label="简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
+    photo = forms.CharField(label="头像",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     captcha = CaptchaField(label="验证码")
 
 class ChangepasswordForm(forms.Form):
