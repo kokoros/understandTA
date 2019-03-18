@@ -18,7 +18,9 @@ from django.urls import path
 from login import views 
 from django.conf.urls import include
 
+
 urlpatterns = [
+    #后台
     path('admin/', admin.site.urls),
     #主页
     path('index/', views.index),
@@ -26,4 +28,7 @@ urlpatterns = [
     path('register/', views.register),
     path('logout/', views.logout),
     path('captcha',include('captcha.urls')),
+    #修改密码
+    path('change_password/',views.change_password),
+
 ]

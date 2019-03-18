@@ -2,11 +2,11 @@ from django.shortcuts import render,redirect
 from login import models
 from login import forms
 import hashlib
+import time
 
 # Create your views here.
 
 def index(request):
-    pass
     return render(request, 'login/index.html')
 
 def login(request):
@@ -95,3 +95,50 @@ def hash_code(s,salt='mysite'):
     s += salt 
     h.update(s.encode())
     return h.hexdigest()
+
+#修改密码
+def change_password(request):
+    #只有在登录状态才会显示修改密码的按钮,所以这里不用判断用户登陆没
+    if request.method == "POST":
+        
+        #加载修改密码的form表
+        change_password_form = forms.ChangepasswordForm(request.POST)
+        message = "所有字段都必须填写哦~"
+        try:
+            #获取此时登录的用户名
+            username = request.session['user_name']
+            #获取当前登录的用户对象
+            user = models.User.objects.get(name=username)
+        except:
+            message = "无法获取当前用户名"
+        # 获取数据
+        if change_password_form.is_valid():
+            #获取表格传入的数据
+            old_password = change_password_form.cleaned_data['old_password']
+            new_password1 = change_password_form.cleaned_data['new_password1']
+            new_password2 = change_password_form.cleaned_data['new_password2']
+
+        if new_password1 != new_password2:
+            message = "两次输入的密码不同"
+            return render(request, 'login/change_password.html', locals())
+        elif hash_code(old_password) == hash_code(new_password1):
+            message = "新老密码不能相同"
+            return render(request, 'login/change_password.html', locals())
+        else:
+            try:
+                #哈希值和数据库值对比
+                if user.password == hash_code(old_password):
+                    #改变密码
+                    user.password = hash_code(new_password1)
+                    user.save()                
+                    return render(request, 'login/change_password_done.html', locals())
+                else:
+                    message = "原密码不正确哦"
+                    return render(request, 'login/change_password.html', locals())
+            except:
+                message = "请填入正确的原密码"
+        return render(request, "login/change_password.html", locals())
+
+    change_password_form = forms.ChangepasswordForm()
+    return render(request, 'login/change_password.html', locals())  
+
