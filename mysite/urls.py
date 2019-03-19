@@ -30,5 +30,7 @@ urlpatterns = [
     path('captcha',include('captcha.urls')),
     #修改密码
     path('change_password/',views.change_password),
+    #确认邮件确认请求
+    path('confirm/',views.user_confirm),
 
 ]

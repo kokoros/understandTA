@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from login import models
 from login import forms
 import hashlib
-import time
+import datetime
+from django.conf import settings
 
 # Create your views here.
 
@@ -20,6 +21,10 @@ def login(request):
             password = login_form.cleaned_data['password']
             try:
                 user = models.User.objects.get(name=username)
+                #判断是否通过邮件确认
+                if not user.has_confirmed:
+                    message = "您还未通过邮件确认注册"
+                    return render(request,'login/login.html', locals())
                 #哈希值和数据库值对比
                 if user.password == hash_code(password):
                     request.session['is_login'] = True
@@ -35,6 +40,7 @@ def login(request):
     login_form = forms.UserForm()
     return render(request, 'login/login.html',locals())
 
+#注册
 def register(request):
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST)
@@ -64,7 +70,7 @@ def register(request):
             same_email_user = models.User.objects.filter(email=email)
             #如果邮箱存在
             if same_email_user:
-                message = "邮箱已存在,请换一个邮箱注册"
+                message = "邮箱已被注册,请换一个邮箱注册"
                 return render(request, 'login/register.html', locals())
             #一切都ok时
             new_user = models.User()
@@ -77,11 +83,46 @@ def register(request):
             new_user.intro = intro 
             new_user.photo = photo
             new_user.save()
-            #自动跳转到登录页面
-            return redirect('/login/')
+
+            #认证注册邮箱
+            code = make_confirm_string(new_user)
+            send_email(email,code)
+            message = "请前往注册邮箱,进行邮箱认证~"
+            #跳转到等待邮件确认页面
+            return render(request, 'login/confirm.html', locals())
+
     register_form = forms.RegisterForm()
     return render(request, 'login/register.html', locals())
 
+#创建确认码对象
+def make_confirm_string(user):
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #now为盐
+    code = hash_code(user.name, now)
+    #生成并保存确认码
+    models.ConfirmString.objects.create(code=code,user=user,)
+    return code
+
+#发送邮件
+def send_email(email, code):
+    from django.core.mail import EmailMultiAlternatives
+
+    subject = '来自www.understandta.com的注册确认邮件'
+
+    text_content = '''感谢注册www.understandta.com,这里是您宠物的乐园,专注给宠物提供更好的服务!
+    如果您看到这条消息,说明您的邮箱不支持html链接功能,请回信与我们联系
+    '''
+
+    html_content = '''
+    <p>感谢注册<a href="http://{}/confirm/?code={}" target=blank>www.understandta.com</a>,
+    这里是您宠物的乐园,专注给宠物提供更好的服务!</p>
+    <p>请点击站点链接完成注册确认!</p>
+    <p>此链接有效期为{}天!</p>
+    '''.format('127.0.0.1:8000', code, settings.CONFIRM_DAYS)
+
+    msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 def logout(request):
     if not request.session.get('is_login',None):
@@ -96,6 +137,7 @@ def hash_code(s,salt='mysite'):
     #sha256算法加密
     h = hashlib.sha256()
     s += salt 
+    #update只接受字节串
     h.update(s.encode())
     return h.hexdigest()
 
@@ -148,3 +190,30 @@ def change_password(request):
     change_password_form = forms.ChangepasswordForm()
     return render(request, 'login/change_password.html', locals())  
 
+#确认邮件请求
+def user_confirm(request):
+    #获取确认码
+    code = request.GET.get('code', None)
+    message = ''
+    try:
+        #查看数据库中确认码是否一致
+        confirm = models.ConfirmString.objects.get(code=code)
+    except:
+        message = '无效的确认请求!'
+        return render(request, 'login/confirm.html', locals())
+    
+    c_time = confirm.c_time 
+    now = datetime.datetime.now()
+    #时间超时
+    if now > c_time + datetime.timedelta(settings.CONFIRM_DAYS):
+        #删除注册用户
+        confirm.user.delete()
+        message = "您的邮件已经过期!请重新注册"
+        return render(request, 'login/confirm.html', locals())
+    else:
+        confirm.user.has_confirmed = True 
+        confirm.user.save()
+        #删除注册码
+        confirm.delete()
+        message = "感谢确认,请使用账户密码登录~"
+        return render(request, 'login/confirm.html', locals())

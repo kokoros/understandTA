@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}注册确认{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <h1 class="text-center">{{ message }}</h1>
+    </div>
+    <!-- 2s后自动跳转到登录界面 -->
+    <script>
+        window.setTimeout("window.location='/login/'",2000); 
+    </script>
+{% endblock %}

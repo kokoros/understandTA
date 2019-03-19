@@ -133,3 +133,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static"),
 ]
+
+#发送邮件
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "korosue@sina.com"
+EMAIL_HOST_PASSWORD = "572zj1314"
+EMAIL_USE_TTL = True
+
+#注册有效期天数
+CONFIRM_DAYS = 3
