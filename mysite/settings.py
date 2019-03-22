@@ -144,3 +144,5 @@ EMAIL_USE_TTL = True
 
 #注册有效期天数
 CONFIRM_DAYS = 3
+#重置密码有效期天数
+RESET_DAYS = 1

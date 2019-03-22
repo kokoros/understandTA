@@ -32,3 +32,13 @@ class ChangepasswordForm(forms.Form):
     old_password = forms.CharField(label="原密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))
     new_password1 = forms.CharField(label="新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
     new_password2 = forms.CharField(label="确认新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
+
+#重置密码的视图表
+class ResetpasswordForm(forms.Form):
+    email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'form-control'}))
+    captcha = CaptchaField(label="验证码")
+
+#确认邮箱后,让用户输入新密码的视图表
+class ResetpasswordreadyForm(forms.Form):
+    new_password1 = forms.CharField(label="新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
+    new_password2 = forms.CharField(label="确认新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))   

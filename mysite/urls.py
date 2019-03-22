@@ -32,5 +32,11 @@ urlpatterns = [
     path('change_password/',views.change_password),
     #确认邮件确认请求
     path('confirm/',views.user_confirm),
-
+    
+    #申请重置密码的界面
+    path('reset_password/',views.reset_password),
+    
+    #真正重置密码的界面
+    path('reset_password_ready/',views.reset_password_ready),
+    
 ]
