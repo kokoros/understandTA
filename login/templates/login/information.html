@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}用户信息详情{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="col-md-4 col-md-offset-4">
+        <ul>
+            <li>用户名:{{ name }}</li>
+            <li>邮箱:{{ email }}</li>
+            <li>性别:{{ sex }}</li>
+            <li>主子名:{{ petname }}</li>
+            <li>主子类型:{{ pet_type}}</li>
+            <li>个人简介:{{ intro }}</li>
+            <li>照片:{{ photo }}</li>
+        </ul>
+        
+    </div>
+
+</div>
+{% endblock %}

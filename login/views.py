@@ -363,5 +363,26 @@ def reset_password_ready(request):
     reset_password_ready_form = forms.ResetpasswordreadyForm()
     return render(request, 'login/reset_password_ready.html', locals()) 
                 
+#展示用户信息
+def information(request):
+    try:
+        #获取此时登录的用户名
+        username = request.session['user_name']
+        #获取当前登录的用户对象
+        user = models.User.objects.get(name=username)
+        print(type(user))
+    except:
+        message = "无法获取当前用户名"    
+    #性别字典
+    gender = {'male':'男', 'female':'女', 'unkown':'不详'}
 
+    name = username 
+    email = user.email 
+    sex = gender[user.sex]
+    petname = user.petname
+    pet_type = user.pet_type
+    intro = user.intro
+    photo = user.photo
+    return render(request, 'login/information.html', locals())
+    
         

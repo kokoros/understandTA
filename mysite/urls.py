@@ -39,4 +39,6 @@ urlpatterns = [
     #真正重置密码的界面
     path('reset_password_ready/',views.reset_password_ready),
     
+    #展示个人信息
+    path('information/', views.information),
 ]
