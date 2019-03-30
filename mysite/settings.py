@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'captcha',
+    #裁剪图片
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #添加访问文件
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -146,3 +150,7 @@ EMAIL_USE_TTL = True
 CONFIRM_DAYS = 3
 #重置密码有效期天数
 RESET_DAYS = 1
+
+#头像存储地址
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')

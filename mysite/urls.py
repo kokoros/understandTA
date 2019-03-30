@@ -18,6 +18,11 @@ from django.urls import path
 from login import views 
 from django.conf.urls import include
 
+#为用户上传的文件提供服务
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 
 urlpatterns = [
     #后台
@@ -42,3 +47,6 @@ urlpatterns = [
     #展示个人信息
     path('information/', views.information),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

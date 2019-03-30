@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+<!-- 试验 -->
+{% load static %}
+
 {% block title %}注册{% endblock %}
 {% block content %}
 <div class="container">
     <div class="col-md-4 col-md-offset-4">
-        <form class='form-register' action="/register/" method="post">
+        <form class='form-register' action="/register/" method="post" enctype="multipart/form-data">
 
             {% if message %}
                 <div class="alert alert-warning">{{ message }}</div>
@@ -43,8 +46,8 @@
                 {{ register_form.intro }}
             </div>
             <div class="form-group">
-                {{ register_form.photo.label_tag }}
-                {{ register_form.photo }}
+                <p>上传头像:</p>
+                <input type="file" name="photo">
             </div>
 
 
@@ -57,6 +60,8 @@
             <button type="reset" class="btnbtn-default pull-left">重置</button>
             <button type="submit" class="btnbtn-primary pull-right">提交</button>
         </form>
+
+
     </div> <!-- /container -->
 </div>
 {% endblock %}

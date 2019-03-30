@@ -4,6 +4,9 @@ from login import forms
 import hashlib
 import datetime
 from django.conf import settings
+#导入文件系统
+from django.core.files.storage import FileSystemStorage
+import os
 
 # Create your views here.
 
@@ -47,6 +50,16 @@ def register(request):
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST)
         message = "请检查填写内容~"
+
+        # print(uploaded_file_url)
+        # photo = register_form.cleaned_data['photo']
+        # return render(request, 'login/register.html', {
+        #     'uploaded_file_url': uploaded_file_url,
+        # })
+        # return render(request, 'login/register.html')
+
+
+
         # 获取数据
         if register_form.is_valid():
             username = register_form.cleaned_data['username']
@@ -56,7 +69,7 @@ def register(request):
             sex = register_form.cleaned_data['sex']
             pet_type = register_form.cleaned_data['pet_type']
             intro = register_form.cleaned_data['intro']
-            photo = register_form.cleaned_data['photo']
+
             if password1 != password2:
                 message = "两次输入的密码不同"
                 return render(request, 'login/register.html', locals())
@@ -83,7 +96,38 @@ def register(request):
                 new_user.sex = sex 
                 new_user.pet_type = pet_type 
                 new_user.intro = intro 
-                new_user.photo = photo
+                #如果用户上传的头像
+                if request.FILES.get('photo', None):
+                    # 获取头像
+                    photo_obj = request.FILES['photo']
+                    #文件格式 正则
+                    import re
+                    l = re.split(r'\.',photo_obj.name)
+                    photo_type = l[-1]
+                    photo_name = new_user.name + '.' + photo_type
+                    #存储文件
+                    try:
+                        destination = open(os.path.join("/home/koro/mysite/media/photo",photo_name),"wb+")
+                        for chunk in photo_obj.chunks():
+                            destination.write(chunk)
+                        
+                    except Exception as e:
+                        print('存储文件失败:',e)
+                    finally:
+                        destination.close()
+                        photo_obj.close()
+
+                    # 保存头像
+                    # fs = FileSystemStorage()
+                    # photoname = fs.save(photo_obj.name, photo_obj)
+                    
+                    # photo_str = fs.url(photoname)
+
+
+                    # 拼接路径
+                    photo = "photo/" + new_user.name + '.' + photo_type
+                    #保存图片路径到数据库
+                    new_user.photo = photo
                 new_user.save()
 
                 #认证注册邮箱

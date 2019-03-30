@@ -17,7 +17,7 @@ class User(models.Model):
     petname = models.CharField(max_length=128,default='不详')
     pet_type = models.CharField(max_length=128,default="不详")
     intro = models.CharField(max_length=1024,default="你猜")
-    photo = models.CharField(max_length=1024,default="太帅无法显示")
+    photo = models.ImageField(upload_to='photo/', default='photo/default.png', null=True)
     c_time = models.DateTimeField(auto_now_add=True)
     # 默认未进行邮箱注册确认
     has_confirmed = models.BooleanField(default=False)

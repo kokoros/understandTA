@@ -25,7 +25,7 @@ class RegisterForm(forms.Form):
     petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     intro = forms.CharField(label="简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
-    photo = forms.CharField(label="头像",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
+    # photo = forms.CharField(label="头像",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     captcha = CaptchaField(label="验证码")
 
 class ChangepasswordForm(forms.Form):

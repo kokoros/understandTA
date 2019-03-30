@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}用户信息详情{% endblock %}
 {% block content %}
 
@@ -11,7 +12,9 @@
             <li>主子名:{{ petname }}</li>
             <li>主子类型:{{ pet_type}}</li>
             <li>个人简介:{{ intro }}</li>
-            <li>照片:{{ photo }}</li>
+            <li>照片:
+                <img src="{{ MEDIA_URL}}{{ photo }}">
+            </li>
         </ul>
         
     </div>
