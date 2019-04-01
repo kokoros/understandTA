@@ -5,7 +5,7 @@ Getting Started
 --------------
 * 安装第三方库依赖
   pip3 install -r requirements.txt
-* 配置settings.py文件:将settings.example.py自行配置好后,更名为settings.py
+* 配置settings.py文件:将settings.example.py自行修改*号处的配置后后,更名为settings.py
 
 * 进入外层mysite目录: 
      cd mysite
