@@ -42,3 +42,19 @@ class ResetpasswordForm(forms.Form):
 class ResetpasswordreadyForm(forms.Form):
     new_password1 = forms.CharField(label="新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
     new_password2 = forms.CharField(label="确认新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))   
+
+#展示用户信息并可修改
+class ModifyForm(forms.Form):
+    gender = (
+        ('male','男'),
+        ('female','女'),
+        ('unkown','不详')
+    )
+    
+    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
+    sex = forms.ChoiceField(label="性别",choices=gender)
+    petname = forms.CharField(label="宠物名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
+    pet_type = forms.CharField(label="宠物种类",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
+    intro = forms.CharField(label="简介",max_length=1024,widget=forms.TextInput(attrs={'class':'form-control'}))
+    captcha = CaptchaField(label="验证码")
+

@@ -51,15 +51,6 @@ def register(request):
         register_form = forms.RegisterForm(request.POST)
         message = "请检查填写内容~"
 
-        # print(uploaded_file_url)
-        # photo = register_form.cleaned_data['photo']
-        # return render(request, 'login/register.html', {
-        #     'uploaded_file_url': uploaded_file_url,
-        # })
-        # return render(request, 'login/register.html')
-
-
-
         # 获取数据
         if register_form.is_valid():
             username = register_form.cleaned_data['username']
@@ -116,13 +107,6 @@ def register(request):
                     finally:
                         destination.close()
                         photo_obj.close()
-
-                    # 保存头像
-                    # fs = FileSystemStorage()
-                    # photoname = fs.save(photo_obj.name, photo_obj)
-                    
-                    # photo_str = fs.url(photoname)
-
 
                     # 拼接路径
                     photo = "photo/" + new_user.name + '.' + photo_type
@@ -414,7 +398,6 @@ def information(request):
         username = request.session['user_name']
         #获取当前登录的用户对象
         user = models.User.objects.get(name=username)
-        print(type(user))
     except:
         message = "无法获取当前用户名"    
     #性别字典
@@ -430,3 +413,86 @@ def information(request):
     return render(request, 'login/information.html', locals())
     
         
+#修改用户信息
+def modify(request):
+    try:
+        #获取此时登录的用户名
+        username = request.session['user_name']
+        #获取当前登录的用户对象
+        user = models.User.objects.get(name=username) 
+        # print(user.name)
+    except:
+        message = "无法获取当前用户名"  
+    # 如果提交了表单
+    if request.method == "POST":
+        
+        modify_form = forms.ModifyForm(request.POST)
+        message = "所有字段都必须填写哦~"
+        # 获取数据
+        print(modify_form.is_valid())
+        if modify_form.is_valid():
+            #获取表格传入的数据
+            username = modify_form.cleaned_data['username']
+            sex = modify_form.cleaned_data['sex']
+            petname = modify_form.cleaned_data['petname']
+            pet_type = modify_form.cleaned_data['pet_type']
+            intro = modify_form.cleaned_data['intro']
+
+            #用户名如果改变了
+            if username != user.name:
+                same_name_user = models.User.objects.filter(name=username)
+                #如果用户名存在
+                if same_name_user:
+                    message = "用户名已存在,请重新输入"
+                    return render(request, 'login/modify.html', locals())
+            #一切都ok时,改变数据库
+            user.name = username
+            user.sex = sex 
+            user.petname = petname 
+            user.pet_type = pet_type
+            user.intro = intro 
+
+
+            # 如果用户上传了头像
+            if request.FILES.get('new_photo', None):
+                # 获取头像
+                photo_obj = request.FILES['new_photo']
+                #获取文件格式 正则
+                import re
+                l = re.split(r'\.',photo_obj.name)
+                photo_type = l[-1]
+                photo_name = user.name + '.' + photo_type
+                # 替换头像文件
+                try:
+                    destination = open(os.path.join("/home/koro/mysite/media/photo", photo_name),"wb+")
+                    for chunk in photo_obj.chunks():
+                        destination.write(chunk)
+                        
+                except Exception as e:
+                    print('存储文件失败:',e)
+                finally:
+                    destination.close()
+                    photo_obj.close()
+                # 拼接路径
+                photo = "photo/" + user.name + '.' + photo_type
+                #保存图片路径到数据库
+                user.photo = photo
+            #更新数据库数据
+            #数据库中的头像路径也要改变
+            user.save()
+
+            return render(request, 'login/modify_done.html', locals())
+        # 打印表单验证失败的原因
+        else:
+            print(modify_form.errors)
+
+    # 如果是get请求
+    #实例化对象 传入当前用户的信息为input默认值
+    modify_form = forms.ModifyForm(initial={'username':user.name,
+    'sex':user.sex,
+    'petname':user.petname,
+    'pet_type':user.pet_type,
+    'intro':user.intro})
+
+    return render(request, 'login/modify.html', locals()) 
+

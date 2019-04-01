@@ -46,6 +46,9 @@ urlpatterns = [
     
     #展示个人信息
     path('information/', views.information),
+
+    #修改个人信息
+    path('modify/', views.modify),
 ]
 
 if settings.DEBUG:
