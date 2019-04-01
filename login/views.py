@@ -496,3 +496,5 @@ def modify(request):
 
     return render(request, 'login/modify.html', locals()) 
 
+def home(request):
+    return render(request, 'login/home.html')

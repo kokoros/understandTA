@@ -21,7 +21,7 @@ class RegisterForm(forms.Form):
     
     email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'form-control'}))
 
-    sex = forms.ChoiceField(label="性别",choices=gender,initial="不详")
+    sex = forms.ChoiceField(label="性别",choices=gender,initial="unkown")
     petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     intro = forms.CharField(label="简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
