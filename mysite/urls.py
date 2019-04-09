@@ -50,7 +50,7 @@ urlpatterns = [
     #修改个人信息
     path('modify/', views.modify),
 
-    # 首页
+    # 首页 /
     path('', views.home),
 ]
 

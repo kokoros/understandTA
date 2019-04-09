@@ -7,7 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
         <title>{% block title %}base{% endblock %}</title>
+{#    传入less#}
 
+{#<link rel="stylesheet" href="http://cdn.staticfile.org/normalize/3.0.1/normalize.min.css" type="text/css" />#}
+{#        <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>#}
+{#        <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>#}
         <!-- Bootstrap -->
         <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -17,10 +21,36 @@
             <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->    
-        {% block css %}{% endblock %}                                     
+        {% block css %}{% endblock %}
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+<!--// css -->
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+<!-- //font-awesome icons -->
+<!-- font -->
+{#<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>#}
+{#<link href="http://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">#}
+{#<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>#}
+<!-- //font -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
     </head>
     <body>
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default" style="background: #9b53321a;">
                 <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -30,14 +60,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Mysite</a>
+                    <a class="navbar-brand" href="/">首页</a>
                 </div>
             
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="my-nav">
-                    <ul class="nav navbar-nav">
-                    <li class="active"><a href="/index/">主页</a></li>
-                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if request.session.is_login %}
                             <li><a href="#">当前在线:{{ request.session.user_name }}</a></li>
@@ -58,10 +85,90 @@
 
             {% block content %}{% endblock %}
 
+	<!-- footer -->
+	<footer>
+		<div class="container">
+			<div class="agileits-w3layouts-footer-grids">
+				<div class="col-md-4 footer-left">
+					<h3>
+						<a href="index.html">懂 <span>TA</span></a>
+					</h3>
+					<div class="footer-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-4 footer-left">
+					<h4>快速导航</h4>
+					<div class="col-md-6 footer-grid-left">
+						<ul>
+							<li><a class="active" href="index.html">主页</a></li>
+							<li><a href="about.html">关于我们</a></li>
+							<li><a href="gallery.html">明星宠物墙</a></li>
+							<li><a href="icons.html">每周科普</a></li>
+						</ul>
+					</div>
+					<div class="col-md-6 footer-grid-left">
+						<ul>
+							<li><a href="typography.html">精选商品</a></li>
+							<li><a href="blog.html">合作商家</a></li>
+						</ul>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="col-md-4 footer-left">
+					<h4>为了TA</h4>
+					<p>
+                        终身伴侣,精心呵护
+                        <br/><br/><br/>
+                        终身铲屎
+                    </p>
+
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</footer>
+	<!-- footer -->
+
+	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/easing.js'%}"></script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function($) {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear'
+				};
+			*/
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+			});
+	</script>
+<!-- //here ends scrolling icon -->
+
+
+
+
+
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+
             <!-- Include all compiled plugins (below), or include individual files as needed -->        
             <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+
+
+
     </body>
+{% block csslast %}{% endblock %}
 </html>

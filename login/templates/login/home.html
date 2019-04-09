@@ -1,9 +1,363 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}首页{% endblock %}
+
+
+
+
 {% block content %}
-    {% if request.session.is_login %}
-    <h1>你好呀,{{ request.session.user_name }}~这里是首页</h1>
-    {% else %}
-    <h1>尚未登录,请登录</h1>
-    {% endif %}
+
+	<!-- banner -->
+	<div class="banner">
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="/">懂<span>Ta</span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a class="active" href="index.html">首页</a></li>
+									<li><a href="about.html">商品</a></li>
+									<li class=""><a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">公告区<span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
+											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>          
+										</ul>
+									</li>								
+									<li><a href="gallery.html">明星宠物墙</a></li>
+									<li><a href="blog.html">每周科普</a></li>
+									<li><a href="contact.html">关于我们</a></li>
+								</ul>	
+								<div class="clearfix"> </div>
+							</div>	
+						</nav>		
+					</div>
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+						</ul>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="w3layouts-banner-slider">
+			<div class="container">
+				<div class="slider">
+					<div class="callbacks_container">
+						<ul class="rslides callbacks callbacks1" id="slider4">
+							<li>
+								<div class="agileits-banner-info">
+									<h3>我们的终身伴侣<br/>终身 陪伴<span>精心 呵护</span></h3>
+									<div class="w3-button">
+										<a href="single.html">更多</a>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="agileits-banner-info">
+									<h3>为了守护<br/>主子的笑容<span>为了最珍贵的你</span></h3>
+									<div class="w3-button">
+										<a href="single.html">更多</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<script src="{% static 'js/responsiveslides.min.js' %}"></script>
+					<script>
+						// You can also use "$(window).load(function() {"
+						$(function ($) {
+						  // Slideshow 4
+						  $("#slider4").responsiveSlides({
+							auto: true,
+							pager:true,
+							nav:true,
+							speed: 500,
+							namespace: "callbacks",
+							before: function () {
+							  $('.events').append("<li>before event fired.</li>");
+							},
+							after: function () {
+							  $('.events').append("<li>after event fired.</li>");
+							}
+						  });
+					
+						});
+					 </script>
+					<!--banner Slider starts Here-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //banner -->
+	<!-- banner-bottom -->
+	<div class="welcome">
+		<div class="container">
+			<div class="w3ls-heading">
+                <h2>走失公告</h2>
+                <p>&nbsp;&nbsp;&nbsp;您的每一次点击 他们的多一缕希望</p>
+			</div>
+			<div class="welcome-grids">
+				<div class="col-md-6 agile-welcome-grid">
+					<div class="grid">
+						<div class="col-md-6 agileits-left">
+							<figure class="effect-chico">
+								<img src="{% static 'images/2.jpg' %}" alt="" />
+								<figcaption>
+									<h4>大乔</h4>
+									<p>在武汉洪山区国王大道遗失</p>
+								</figcaption>			
+							</figure>
+						</div>
+						<div class="col-md-6 agileits-left">
+							<figure class="effect-chico">
+								<img src="{% static 'images/3.jpg' %}" alt=" " />
+								<figcaption>
+									<h4>三爷</h4>
+									<p>在北京阿里卡斯村遗失</p>
+								</figcaption>			
+							</figure>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="col-md-6 agileinfo-welcome-right">
+					<h4>武汉 北京 上海 广州 深圳 云南 成都</h4>
+					<p>2019.4.1上海长宁区京汉大道遗失苏牧狗<span>2019.3.29广州佛山区秃头街遗失美短加白猫<br/></span></p>
+                    <p>2019.3.24深圳景德镇遗失田园奶牛猫</p>
+                    <p>2019.3.20云南大庆街遗失棕色田园狗</p>
+                    <p>2019.3.05成都小吃街遗失白色贵宾狗</p>
+
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+
+    <div class="welcome">
+        <div class="container">
+            <div class="w3ls-heading">
+                <h2>领养公告</h2>
+                <p>&nbsp;&nbsp;&nbsp;您的每一次点击 他们的多一缕希望</p>
+            </div>
+            <div class="welcome-grids">
+                <div class="col-md-6 agile-welcome-grid">
+                    <div class="grid">
+                        <div class="col-md-6 agileits-left">
+                            <figure class="effect-chico">
+                                <img src="{% static 'images/g1.jpg' %}" alt="" />
+                                <figcaption>
+                                    <h4>妞妞</h4>
+                                    <p>可在武汉江汉区领养</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-md-6 agileits-left">
+                            <figure class="effect-chico">
+                                <img src="{% static 'images/g2.jpg' %}" alt=" " />
+                                <figcaption>
+                                    <h4>小乔</h4>
+                                    <p>可在北京相声街领养</p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+                <div class="col-md-6 agileinfo-welcome-right">
+                    <h4>武汉 北京 上海 广州</h4>
+                    <p>如果您有一定的能力和爱心,请收容流浪动物<span>我们收容一个心仪的宠物,相当于开着时光穿梭机回到过去,在刀口救下了我们未来的爱人或者家人<br/>我们会改变TA和我们的一生</span></p>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+
+
+
+	<!-- banner-bottom -->
+{#    第二个模板 #}
+    <link href="{% static 'two_temp/css/style1.css' %}" rel="stylesheet">
+    <link href="{% static 'two_temp/css/font-awesome1.min.css' %}" rel="stylesheet">
+{#    <link href="{% static 'two_temp/css/bootstrap1.min.css' %}" rel="stylesheet">#}
+    <link href="{% static 'two_temp/css/owl1.carousel.css' %}" rel="stylesheet">
+
+    <script src="{% static 'two_temp/js/functions1.js' %}"></script>
+    <link href="{% static 'two_temp/css/responsive1.css' %}" rel="stylesheet">
+{#试验#}
+    <section id="portfolio" class="portfolio text-center">
+        <div class="container">
+            <div class="portfolio-area">
+                <div class="portfolio-top">
+                    <h2 class="portfolio-title">精选商品</h2>
+                        <p class="title-description">给主子最佳的爱护</p>
+                </div>
+      <!-- /.portfolio-top -->
+
+
+                <div id="portfolio-slider" class="portfolio-slider owl-carousel owl-theme" style="opacity: 1; display: block;">
+                    <div class="owl-wrapper-outer">
+                        <div class="owl-wrapper" style="width: 5760px; left: 0px; display: block; transition: all 1000ms ease 0s; transform: translate3d(0px, 0px, 0px);">
+                            <div class="owl-item" style="width: 360px;height:400px;">
+                                <div class="item">
+                                    <div class="item-image">
+                                        <a href="">
+                                            <img style="width: 300px;" src="{% static 'two_temp/images/portfolio/1.jpeg' %}" alt="Portfolio Image">
+                                        </a>
+                                    </div>
+                                    <span class="item-title">精选猫罐头.兽人永不为奴!除非包吃包住</span>
+                                </div>
+                            </div>
+
+                            <div class="owl-item" style="width:360px;height:400px;">
+                                 <div class="item">
+                                    <div class="item-image">
+                                        <a href="">
+                                            <img style="width: 300px;height:300px;" src="{% static 'two_temp/images/portfolio/2.jpeg' %}" alt="Portfolio Image">
+                                        </a>
+                                    </div>
+                                    <span class="item-title">精选狗玩具.让主子放心撕咬</span>
+                                 </div>
+                            </div>
+
+                                                        <div class="owl-item" style="width: 360px;height:400px;">
+                                <div class="item">
+                                    <div class="item-image">
+                                        <a href="">
+                                            <img style="width: 300px;" src="{% static 'two_temp/images/portfolio/1.jpeg' %}" alt="Portfolio Image">
+                                        </a>
+                                    </div>
+                                    <span class="item-title">精选猫罐头.兽人永不为奴!除非包吃包住</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                 </div>
+
+            </div><!-- /.portfolio-area -->
+        </div><!-- /.container -->
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- services -->
+	<div class="services">
+		<div class="container">
+			<div class="w3ls-heading">
+				<h3>服务</h3>
+			</div>
+			<div class="wthree-services-grids">
+				<div class="col-md-6 w3ls-about-left">
+
+					<div class="agileits-icon-grid">
+						<div class="icon-left hvr-radial-out">
+							<i class="fa fa-heart" aria-hidden="true"></i>
+						</div>
+						<div class="icon-right">
+							<h5>公益告示区</h5>
+							<p>提供各地领养及寻宠信息,可在告示下留言讨论</p>
+						</div>
+						<div class="clearfix">
+                        </div>
+
+                    </div>
+
+					<div class="agileits-icon-grid">
+						<div class="icon-left hvr-radial-out">
+							<i class="fa fa-paper-plane" aria-hidden="true"></i>
+						</div>
+						<div class="icon-right">
+							<h5>商品快速配送</h5>
+							<p>精选商品,急速配送,提供退换货服务</p>
+						</div>
+						<div class="clearfix">
+                        </div>
+					</div>
+				</div>
+				<div style="margin-bottom: 15px;" class="col-md-6 w3ls-about-left">
+
+					<div class="agileits-icon-grid">
+						<div class="icon-left hvr-radial-out">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+						</div>
+						<div class="icon-right">
+							<h5>精选繁育机构</h5>
+							<p>精心挑选成熟专业的宠物繁育机构.让您有一个健康的新主子</p>
+						</div>
+						<div class="clearfix">
+                        </div>
+                    </div>
+
+
+
+                    <div class="agileits-icon-grid">
+						<div class="icon-left hvr-radial-out">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</div>
+						<div class="icon-right">
+							<h5>遛宠及寄养服务</h5>
+							<p>让您能安心工作与休假,不再担心主子们的健康和安全问题</p>
+						</div>
+						<div class="clearfix"> </div>
+                    </div>
+
+                </div>
+			</div>
+		</div>
+	</div>
+	<!-- //services -->
+	<!-- news -->
+	<div class="news">
+		<div class="container">
+			<div class="w3ls-heading">
+				<h3>每周科普</h3>
+			</div>
+            <br/>
+            <div>
+                {#图#}
+                <div style="text-align:center;">
+                    <img width=800px id="popular_picture" src="{% static 'popular/images/cat.jpeg' %}">
+                </div>
+                {#刷新就改变src,有时间再弄#}
+
+            </div>
+        </div>
+    </div>
+
+	<!-- //news -->
+
+
+{% endblock %}
+
+{% block csslast %}
+
 {% endblock %}

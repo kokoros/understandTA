@@ -64,3 +64,4 @@ class Reset_ConfirmString(models.Model):
         ordering = ["-c_time"]
         verbose_name = "确认码"
         verbose_name_plural = "确认码"
+
