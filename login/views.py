@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from login import models
 from login import forms
 import hashlib
@@ -7,14 +7,20 @@ from django.conf import settings
 #导入文件系统
 from django.core.files.storage import FileSystemStorage
 import os
+#导入验证码模块
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
+#导入Q查询
+from django.db.models import Q
 
 # Create your views here.
 
 def index(request):
     return render(request, 'login/index.html')
 
+#登录
 def login(request):
-    if request.session.get('is_login',None):
+    if request.session.get('is_login', None):
         return redirect("/index/")
     if request.method == "POST":
         login_form = forms.UserForm(request.POST)
@@ -23,7 +29,9 @@ def login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             try:
-                user = models.User.objects.get(name=username)
+                # 判断是否是邮箱或者用户名
+                user = models.User.objects.get(Q(name=username) | Q(email=username))
+                print(user)
                 #判断是否通过邮件确认
                 if not user.has_confirmed:
                     message = "您还未通过邮件确认注册"
@@ -39,11 +47,15 @@ def login(request):
                 else:
                     message = "密码不正确哦"
             except:
-                message = "用户名不存在~"
+                message = "用户名或邮箱不存在~"
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
         return render(request, "login/login.html", locals())
 
     login_form = forms.UserForm()
-    return render(request, 'login/login.html',locals())
+    hashkey = CaptchaStore.generate_key()
+    image_url = captcha_image_url(hashkey)
+    return render(request, 'login/login.html', locals())
 
 #注册
 def register(request):
@@ -498,3 +510,4 @@ def modify(request):
 
 def home(request):
     return render(request, 'login/home.html')
+

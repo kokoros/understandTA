@@ -22,6 +22,9 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 
+#导入
+from django.urls import re_path
+
 
 
 urlpatterns = [
@@ -32,7 +35,9 @@ urlpatterns = [
     path('login/', views.login),
     path('register/', views.register),
     path('logout/', views.logout),
-    path('captcha',include('captcha.urls')),
+    #生成验证码
+    path('captcha', include('captcha.urls')),
+
     #修改密码
     path('change_password/',views.change_password),
     #确认邮件确认请求

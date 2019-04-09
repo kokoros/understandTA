@@ -1,36 +1,67 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block title %}登录{% endblock %}
-{% block css %}<link href="{% static 'css/login.css' %}" rel="stylesheet"/>{% endblock %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="col-md-4 col-md-offset-4">
-        <form class='form-login' action="/login/" method="post">
 
-            {% if message %}
-                <div class="alert alert-warning">{{ message }}</div>
-            {% endif %}
-            {% csrf_token %}
-            <h2 class="text-center">欢迎登录</h2>
-            <div class="form-group">
-                {{ login_form.username.label_tag }}
-                {{ login_form.username }}
-            </div>
-            <div class="form-group">
-                {{ login_form.password.label_tag }}
-                {{ login_form.password }}
-            </div>
+	<div class="lowin lowin-red" style="height:800px;background:url({% static 'login/mycat.jpg' %});">
+		<div class="lowin-brand">
+			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form action="/login/" method="post">
+                        {% if message %}
+                            <div class="alert alert-warning">{{ message }}</div>
+                        {% endif %}
+                        {% csrf_token %}
 
-            <div class="form-group">
-                {{ login_form.captcha.errors }}
-                {{ login_form.captcha.label_tag }}
-                {{ login_form.captcha }}
-            </div>
+                        <p>欢迎登录</p>
+						<div class="lowin-group">
+							<label>{{ login_form.username.label_tag }}</label>
+                            {{ login_form.username }}
+						</div>
 
-            <button type="reset" class="btnbtn-default pull-left">重置</button>
-            <button type="submit" class="btnbtn-primary pull-right">提交</button>
-        </form>
-    </div> <!-- /container -->
-</div>
+						<div class="lowin-group password-group">
+							<label>{{ login_form.password.label_tag }} <a href="#" class="forgot-link">Forgot Password?</a></label>
+							<input type="password" name="password" autocomplete="current-password" class="lowin-input">
+						</div>
+
+                        <div class="lowin-group">
+                            {{ login_form.captcha.errors }}
+                            <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                            <span class="v5-yzm fr">
+                                <a href="#" class="next-captcha">
+                                    <img src="{{ image_url }}" class="captcha" alt="captcha">
+                                    换一张
+                                </a>
+                            </span>
+                            <input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+                        </div>
+
+                            <script>
+                              {# 刷新验证码#}
+                              $(".next-captcha").click(function(){
+                                  $.getJSON("/captcha/refresh", function(data) {
+                                      $(".captcha").attr('src',data.image_url);
+                                      $("#id_reg_captcha_0").attr('value',data.key);
+                                  })
+                              })
+                            </script>
+
+                        <button type="submit" class="lowin-btn login-btn">
+							登录
+						</button>
+						<div class="text-foot">
+							没有账号? <a href="/register/" class="register-link">去注册</a>
+						</div>
+                    </form>
+                </div>
+			</div>
+        </div>
+    </div>
+
+
 {% endblock %}
