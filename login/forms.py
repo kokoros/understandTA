@@ -15,7 +15,7 @@ class RegisterForm(forms.Form):
         ('unkown','不详')
     )
 
-    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input','placeholder' : '请输入用户名'}))
+    username = forms.CharField(label="用户名(可以输入中文)",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input','placeholder' : '请输入用户名'}))
     password1 = forms.CharField(label="密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请输入密码'}))
     password2 = forms.CharField(label="确认密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请再次输入密码'}))
     
@@ -29,9 +29,9 @@ class RegisterForm(forms.Form):
     captcha = CaptchaField(label="验证码")
 
 class ChangepasswordForm(forms.Form):
-    old_password = forms.CharField(label="原密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    new_password1 = forms.CharField(label="新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
-    new_password2 = forms.CharField(label="确认新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))     
+    old_password = forms.CharField(label="原密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请输入旧密码'}))
+    new_password1 = forms.CharField(label="新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请输入新密码'}))
+    new_password2 = forms.CharField(label="确认新密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请再次输入新密码'}))
 
 #重置密码的视图表
 class ResetpasswordForm(forms.Form):
