@@ -2,8 +2,8 @@ from django import forms
 from captcha.fields import CaptchaField
 
 class UserForm(forms.Form):
-    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input'}))
-    password = forms.CharField(label="密码",max_length=256, widget=forms.PasswordInput(attrs={'class':'lowin-input','autocomplete':'current-password'}))
+    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入用户名或邮箱'}))
+    password = forms.CharField(label="密码",max_length=256, widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder'  :'请输入密码', 'autocomplete':'current-password'}))
     captcha = CaptchaField(label="验证码")
 
 
@@ -15,16 +15,16 @@ class RegisterForm(forms.Form):
         ('unkown','不详')
     )
 
-    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
-    password1 = forms.CharField(label="密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    password2 = forms.CharField(label="确认密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input','placeholder' : '请输入用户名'}))
+    password1 = forms.CharField(label="密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请输入密码'}))
+    password2 = forms.CharField(label="确认密码",max_length=256,widget=forms.PasswordInput(attrs={'class':'lowin-input', 'placeholder' : '请再次输入密码'}))
     
-    email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(label="邮箱地址(注册后不可更改邮箱,请谨慎填写)",widget=forms.EmailInput(attrs={'class':'lowin-input', 'placeholder' : '请输入邮箱'}))
 
     sex = forms.ChoiceField(label="性别",choices=gender,initial="unkown")
-    petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
-    pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
-    intro = forms.CharField(label="简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
+    petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入主子名'}))
+    pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入主子种类'}))
+    intro = forms.CharField(label="一句话简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入个人简介'}))
     # photo = forms.CharField(label="头像",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     captcha = CaptchaField(label="验证码")
 

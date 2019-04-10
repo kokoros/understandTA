@@ -5,7 +5,7 @@
 
 {% block content %}
 
-	<div class="lowin lowin-red" style="height:800px;background:url({% static 'login/mycat.jpg' %});">
+	<div class="lowin lowin-red" style="height:900px;background:url({% static 'login/mycat.jpg' %});">
 		<div class="lowin-brand">
 			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo">
 		</div>
@@ -25,8 +25,8 @@
 						</div>
 
 						<div class="lowin-group password-group">
-							<label>{{ login_form.password.label_tag }} <a href="#" class="forgot-link">Forgot Password?</a></label>
-							<input type="password" name="password" autocomplete="current-password" class="lowin-input">
+							<label>{{ login_form.password.label_tag }} <a href="/reset_password/" class="forgot-link">忘记密码?</a></label>
+                            {{ login_form.password }}
 						</div>
 
                         <div class="lowin-group">

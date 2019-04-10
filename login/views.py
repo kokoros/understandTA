@@ -35,6 +35,8 @@ def login(request):
                 #判断是否通过邮件确认
                 if not user.has_confirmed:
                     message = "您还未通过邮件确认注册"
+                    hashkey = CaptchaStore.generate_key()
+                    image_url = captcha_image_url(hashkey)
                     return render(request,'login/login.html', locals())
                 #哈希值和数据库值对比
                 if user.password == hash_code(password):
@@ -42,7 +44,6 @@ def login(request):
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
                     #把重置密码状态改为false
-
                     return redirect('/index/')
                 else:
                     message = "密码不正确哦"
@@ -75,20 +76,28 @@ def register(request):
 
             if password1 != password2:
                 message = "两次输入的密码不同"
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
                 return render(request, 'login/register.html', locals())
             elif len(password1) < 6 or len(password1) > 12:
                 message = "密码长度在6-12个字符间"
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
                 return render(request, 'login/register.html', locals())
             else:
                 same_name_user = models.User.objects.filter(name=username)
                 #如果用户名存在
                 if same_name_user:
                     message = "用户名已存在,请重新输入"
+                    hashkey = CaptchaStore.generate_key()
+                    image_url = captcha_image_url(hashkey)
                     return render(request,'login/register.html', locals())
                 same_email_user = models.User.objects.filter(email=email)
                 #如果邮箱存在
                 if same_email_user:
                     message = "邮箱已被注册,请换一个邮箱注册"
+                    hashkey = CaptchaStore.generate_key()
+                    image_url = captcha_image_url(hashkey)
                     return render(request, 'login/register.html', locals())
                 #一切都ok时
                 new_user = models.User()
@@ -134,6 +143,8 @@ def register(request):
                 return render(request, 'login/confirm.html', locals())
 
     register_form = forms.RegisterForm()
+    hashkey = CaptchaStore.generate_key()
+    image_url = captcha_image_url(hashkey)
     return render(request, 'login/register.html', locals())
 
 #创建确认码对象

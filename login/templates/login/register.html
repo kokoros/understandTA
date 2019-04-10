@@ -3,65 +3,133 @@
 {% load static %}
 
 {% block title %}注册{% endblock %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="col-md-4 col-md-offset-4">
-        <form class='form-register' action="/register/" method="post" enctype="multipart/form-data">
-
-            {% if message %}
-                <div class="alert alert-warning">{{ message }}</div>
-            {% endif %}
-            {% csrf_token %}
-            <h2 class="text-center">欢迎注册</h2>
-            <div class="form-group">
-                {{ register_form.username.label_tag }}
-                {{ register_form.username }}
-            </div>
-            <div class="form-group">
-                {{ register_form.password1.label_tag }}
-                {{ register_form.password1 }}
-            </div>
-            <div class="form-group">
-                {{ register_form.password2.label_tag }}
-                {{ register_form.password2 }}
-            </div>
-            <div class="form-group">
-                    {{ register_form.email.label_tag }}
-                    {{ register_form.email }}
-            </div>
-            <div class="form-group">
-                {{ register_form.sex.label_tag }}
-                {{ register_form.sex }}
-            </div>
-            <div class="form-group">
-                {{ register_form.petname.label_tag }}
-                {{ register_form.petname }}
-            </div>
-            <div class="form-group">
-                {{ register_form.pet_type.label_tag }}
-                {{ register_form.pet_type }}
-            </div>
-            <div class="form-group">
-                {{ register_form.intro.label_tag }}
-                {{ register_form.intro }}
-            </div>
-            <div class="form-group">
-                <p>上传头像:</p>
-                <input type="file" name="photo">
-            </div>
 
 
-            <div class="form-group">
-                {{ register_form.captcha.errors }}
-                {{ register_form.captcha.label_tag }}
-                {{ register_form.captcha }}
-            </div>
-
-            <button type="reset" class="btnbtn-default pull-left">重置</button>
-            <button type="submit" class="btnbtn-primary pull-right">提交</button>
-        </form>
+{#    试验#}
 
 
-    </div> <!-- /container -->
-</div>
+	<div class="lowin lowin-red" style="height:1500px;background:url({% static 'login/mycat.jpg' %});">
+		<div class="lowin-brand">
+			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form action="/register/" method="post" enctype="multipart/form-data">
+                        {% if message %}
+                            <div class="alert alert-warning">{{ message }}</div>
+                        {% endif %}
+                        {% csrf_token %}
+
+                        <p>欢迎新用户注册</p>
+
+						<div class="lowin-group">
+							<label>{{ register_form.username.label_tag }}</label>
+                            {{ register_form.username }}
+						</div>
+
+						<div class="lowin-group password-group">
+							<label>{{ register_form.password1.label_tag }}</label>
+                            {{ register_form.password1 }}
+						</div>
+
+  						<div class="lowin-group">
+							<label>{{ register_form.password2.label_tag }}</label>
+                            {{ register_form.password2 }}
+						</div>
+
+  						<div class="lowin-group">
+							<label>{{ register_form.email.label_tag }}</label>
+                            {{ register_form.email }}
+						</div>
+
+{#css部分#}
+                    <link href="{% static 'login/register.css' %}" rel="stylesheet"/>
+{#折叠和展开按钮#}
+                        <div class="fold-button">
+                            <span class="open">展开</span>
+                            <span class="close_line" style="display:none;">收起</span>
+                        </div>
+
+{#                    以下都是不怎么重要的信息,折叠起来#}
+                        <div class="fold-box" style="display:none;">
+
+                            <div class="lowin-group">
+                                <label>{{ register_form.sex.label_tag }}</label>
+                                {{ register_form.sex }}
+                            </div>
+
+                            <div class="lowin-group">
+                                <label>{{ register_form.petname.label_tag }}</label>
+                                {{ register_form.petname }}
+                            </div>
+
+                            <div class="lowin-group">
+                                <label>{{ register_form.pet_type.label_tag }}</label>
+                                {{ register_form.pet_type }}
+                            </div>
+
+                            <div class="lowin-group">
+                                <label>{{ register_form.intro.label_tag }}</label>
+                                {{ register_form.intro }}
+                            </div>
+
+                            <div class="lowin-group">
+                                <p>上传头像:</p>
+                                <input type="file" name="photo">
+                            </div>
+
+                        </div>
+
+{#js部分#}
+                        <script>
+                            $(function(){
+                                $(".fold-button").click(function(){
+                                    $(".fold-box").slideToggle("slow");
+                                    $(".open").toggle();
+                                    $(".close_line").toggle();
+                                });
+                            });
+                        </script>
+
+
+
+                        <div class="lowin-group">
+                            {{ login_form.captcha.errors }}
+                            <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                            <span class="v5-yzm fr">
+                                <a href="#" class="next-captcha">
+                                    <img src="{{ image_url }}" class="captcha" alt="captcha">
+                                    换一张
+                                </a>
+                            </span>
+                            <input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+                        </div>
+
+                            <script>
+                              {# 刷新验证码#}
+                              $(".next-captcha").click(function(){
+                                  $.getJSON("/captcha/refresh", function(data) {
+                                      $(".captcha").attr('src',data.image_url);
+                                      $("#id_reg_captcha_0").attr('value',data.key);
+                                  })
+                              })
+                            </script>
+
+
+
+                        <button type="submit" class="lowin-btn login-btn">
+							注册
+						</button>
+						<div class="text-foot">
+							已有账号? <a href="/login/" class="register-link">去登录</a>
+						</div>
+                    </form>
+                </div>
+			</div>
+        </div>
+    </div>
+
 {% endblock %}
