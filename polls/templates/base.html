@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
@@ -29,7 +30,7 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
 <!--// css -->
 <!-- font-awesome icons -->
-<link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
 <!-- //font-awesome icons -->
 
 <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
@@ -69,7 +70,7 @@
 
                             <li><a href="/logout/">登出</a></li>
                         {% else %}
-                            <li><a href="/login/">登录</a></li>
+                            <li><a href="/login">登录</a></li>
                             <li><a href="/register/">注册</a></li>
                             <li><a href="/reset_password/">重置密码</a></li>
                         {% endif %}
@@ -132,7 +133,7 @@
 	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
 	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/easing.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
 	<!-- here stars scrolling icon -->
 	<script type="text/javascript">
 		$(document).ready(function($) {

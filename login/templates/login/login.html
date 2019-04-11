@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 {% block title %}登录{% endblock %}
 {% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 
@@ -31,6 +30,7 @@
 
                         <div class="lowin-group">
                             {{ login_form.captcha.errors }}
+                            <label>验证码:</label>
                             <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
                             <span class="v5-yzm fr">
                                 <a href="#" class="next-captcha">

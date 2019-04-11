@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}宠物展示{% endblock %}
+
+{% block css %}
+
+<style>
+        #body{
+                background-color:#89BDCA;
+        }
+        #content{
+       margin: 0 auto;
+       height: 650px;
+       position: relative;
+       }
+       .forcont{
+           width: 300px;
+           height: 330px;  
+           float: left; 
+           background-image: url('/static/images/h.jpg ');
+       }
+       #imgp{
+               width: 200px;
+               height: 200px;
+       }
+       p{
+               margin:1px 0px;
+       }
+       .con{
+               width: 200px;
+       }
+
+       #form{
+               margin: 0 auto;
+               width: 80%;
+               height: 40px;
+       }
+       .ser{
+        background-color:#89BDCA;
+        }
+       ＃foot{
+               margin: 0 auto;
+               height: 30px;
+               position:absolute;
+               align-content: center;
+       }
+       #fenye {
+               align-content: center;
+               display: inline;
+               text-align: center;
+               display: block;
+       }
+       #aname{
+               text-decoration: none;
+       }
+       </style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id='body'>
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+<div id='forms'>
+<form align='center'  id='form' action="/query" method="GET">
+<input class="ser" type='text' name="query">
+<input class="ser" type="submit" value="查询">
+</form>
+</div>
+ <!-- 动态数据展示 -->
+<div align='center' id='content' style="width:90%;">
+{% if posts%}
+ {% for pr in posts %}   
+ <!-- 循环数据 -->
+<div class="forcont"> 
+        <img id='imgp' src="{{pr.ppath}}" > 
+        <br>  
+        <p id='p1' class="con">
+        收藏量:{{pr.pnumber}}  &nbsp;&nbsp; 
+        <a href='?collect={{pr.id}}'>收藏</a>
+        </p>
+        <p  id='p2' class="con">
+            种类:&nbsp;&nbsp;  {{pr.Ptype}} 
+       </p>
+        <p id='p3' class="con"> 
+      <a   id='aname'  href='' > {{pr.pname}}  </a>
+        </p>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+<!-- 分页控制 -->
+ <div　id='foot'>　
+<span id='fenye'>
+        {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}">上一页</a>
+        {% endif %}
+        <span>
+                当前页{{posts.number }} 总共 {{posts.paginator.num_pages}}        
+        </span>
+        {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">下一页</a>
+        {% endif %}
+</span>
+</div> 
+</div>
+</div>
+
+{% endblock %}

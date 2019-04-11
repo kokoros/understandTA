@@ -22,8 +22,8 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 
-#导入
-from django.urls import re_path
+#导入polls文件夹中的views,重命名为polls_views
+from polls import views as polls_views
 
 
 
@@ -57,6 +57,10 @@ urlpatterns = [
 
     # 首页 /
     path('', views.home),
+
+    #导入polls中的路由
+    path(r'pet', polls_views.pets),
+
 ]
 
 if settings.DEBUG:

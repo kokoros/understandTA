@@ -196,7 +196,7 @@ def send_email(email, code, string):
         这里是您宠物的乐园,专注给宠物提供更好的服务!</p>
         <p>请点击站点链接完成重置密码确认!</p>
         <p>此链接有效期为{}天!</p>
-        '''.format('127.0.0.1:8000', code, string , settings.RESET_DAYS)
+        '''.format('127.0.0.1:8000', code, string, settings.RESET_DAYS)
     #试图发送邮件
     try:
         msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [email])
@@ -406,8 +406,9 @@ def reset_password_ready(request):
                     user.save()       
                              
                     return render(request, 'login/change_password_done.html', locals())
-                except:
+                except Exception as e:
                     message = "修改密码失败,请联系管理员"
+                    print(e)
                     return render(request, 'login/reset_password_ready.html', locals())
         return render(request, "login/reset_password_ready.html", locals())
 
