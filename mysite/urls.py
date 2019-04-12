@@ -31,7 +31,6 @@ urlpatterns = [
     #后台
     path('admin/', admin.site.urls),
     #主页
-    path('index/', views.index),
     path('login/', views.login),
     path('register/', views.register),
     path('logout/', views.logout),

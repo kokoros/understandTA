@@ -35,7 +35,7 @@ class ChangepasswordForm(forms.Form):
 
 #重置密码的视图表
 class ResetpasswordForm(forms.Form):
-    email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(label="邮箱地址",widget=forms.EmailInput(attrs={'class':'lowin-input', 'placeholder': '请输入邮箱'}))
     captcha = CaptchaField(label="验证码")
 
 #确认邮箱后,让用户输入新密码的视图表

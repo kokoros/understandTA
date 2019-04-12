@@ -15,16 +15,13 @@ from django.db.models import Q
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'login/index.html')
-
 #登录
 def login(request):
     if request.session.get('is_login', None):
-        return redirect("/index/")
+        return redirect("/")
     if request.method == "POST":
         login_form = forms.UserForm(request.POST)
-        message = "所有字段都必须填写哦~"
+        message = "所有字段都必须填写正确哦~"
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
@@ -44,7 +41,7 @@ def login(request):
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
                     #把重置密码状态改为false
-                    return redirect('/index/')
+                    return redirect('/')
                 else:
                     message = "密码不正确哦"
             except:
@@ -209,10 +206,10 @@ def send_email(email, code, string):
 def logout(request):
     if not request.session.get('is_login',None):
         #如果本来就没登录
-        return redirect("/index/")
+        return redirect("/")
     #清空session中的内容
     request.session.flush()
-    return redirect("/index/")
+    return redirect("/")
 
 #密码哈希值加密
 def hash_code(s,salt='mysite'):
@@ -359,9 +356,13 @@ def reset_password(request):
                 send_email(email, code, 'reset')
                 message = "请前往注册邮箱,进行重置密码的邮箱认证~"
                 #跳转到等待邮件确认页面
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
                 return render(request, 'login/reset_password_done.html', locals())
 
     reset_password_form = forms.ResetpasswordForm()
+    hashkey = CaptchaStore.generate_key()
+    image_url = captcha_image_url(hashkey)
     return render(request, 'login/reset_password.html', locals())
 
 #让用户输入重置的新密码

@@ -1,23 +1,106 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block title %}用户信息详情{% endblock %}
+{#导入css#}
+{% block css %}
+    <link href="{% static 'login/auth.css' %}" rel="stylesheet"/>
+    <style>
+    .banner{
+	background-image: none;
+
+}
+    </style>
+{% endblock %}
+
 {% block content %}
 
-<div class="container">
-    <div class="col-md-4 col-md-offset-4">
-        <ul>
-            <li>用户名:{{ name }}</li>
-            <li>邮箱:{{ email }}</li>
-            <li>性别:{{ sex }}</li>
-            <li>主子名:{{ petname }}</li>
-            <li>主子类型:{{ pet_type}}</li>
-            <li>个人简介:{{ intro }}</li>
-            <li>照片:
-                <img src="{{ MEDIA_URL}}{{ photo }}">
-            </li>
-        </ul>
-        
+    <!-- banner -->
+	<div class="banner" style="background-image: none;">
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="/">懂<span>Ta</span></a>
+						</h1>
+					</div>
+				</div>
+				<div class="header-right">
+					<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a class="active" href="/">首页</a></li>
+									<li><a href="about.html">商品</a></li>
+									<li class="">
+                                        <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            公告区
+                                            <span class="caret"></span>
+                                        </a>
+										<ul class="dropdown-menu">
+											<li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
+											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
+										</ul>
+									</li>
+									<li><a href="gallery.html">明星宠物墙</a></li>
+									<li><a href="#week_news">每周科普</a></li>
+									<li><a href="contact.html">关于我们</a></li>
+								</ul>
+								<div class="clearfix"> </div>
+							</div>
+						</nav>
+					</div>
+					<div class="agileinfo-social-grids">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+						</ul>
+					</div>
+{#					<div class="clearfix"> </div>#}
+				</div>
+{#				<div class="clearfix"> </div>#}
+			</div>
+		</div>
+
+	</div>
+	<!-- //banner -->
+
+    <div class="lowin lowin-red" style="height:600px;background:url({% static 'login/mycat2.jpg' %})">
+		<div class="lowin-brand">
+			<img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+                    <p>个人简介</p>
+                    <div class="lowin-group">
+                        <label>用户名:{{ name }}</label>
+                        <br/><br/>
+                        <label>邮箱:{{ email }}</label>
+                        <br/><br/>
+                        <label>性别:{{ sex }}</label>
+                        <br/><br/>
+                        <label>主子名:{{ petname }}</label>
+                        <br/><br/>
+                        <label>主子类型:{{ pet_type}}</label>
+                        <br/><br/>
+                        <label>一句话简介:{{ intro }}</label>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
 {% endblock %}

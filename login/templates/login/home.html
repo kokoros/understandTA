@@ -2,9 +2,8 @@
 {% load staticfiles %}
 {% block title %}首页{% endblock %}
 
-{% block content %}
-
-	<!-- banner -->
+{% block headfirst %}
+    	<!-- banner -->
 	<div class="banner">
 		<div class="header">
 			<div class="container">
@@ -29,27 +28,62 @@
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav">
-									<li><a class="active" href="index.html">首页</a></li>
+									<li><a class="active" href="/">首页</a></li>
 									<li><a href="about.html">商品</a></li>
-									<li class=""><a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">公告区<span class="caret"></span></a>
+									<li class="">
+                                        <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            公告区
+                                            <span class="caret"></span>
+                                        </a>
 										<ul class="dropdown-menu">
 											<li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
-											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>          
+											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
 										</ul>
-									</li>								
+									</li>
 									<li><a href="gallery.html">明星宠物墙</a></li>
 									<li><a href="#week_news">每周科普</a></li>
 									<li><a href="contact.html">关于我们</a></li>
-								</ul>	
+								</ul>
 								<div class="clearfix"> </div>
-							</div>	
-						</nav>		
+							</div>
+						</nav>
 					</div>
 					<div class="agileinfo-social-grids">
 						<ul>
 							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 							<li><a href="#"><i class="fa fa-rss"></i></a></li>
+
+
+                            {% if request.session.is_login %}
+                            <li class="new_login_about"><a href="/information/">当前在线:{{ request.session.user_name }}</a></li>
+                            <li class="new_login_about"><a href="/change_password/">修改密码</a></li>
+                            <li class="new_login_about"><a href="/modify/">修改个人信息</a></li>
+
+                            <li class="new_login_about"><a href="/logout/">登出</a></li>
+                            {% else %}
+                            <li class="new_login_about"><a href="/login/">登录</a></li>
+                            <li class="new_login_about"><a href="/register/">注册</a></li>
+                            <li class="new_login_about"><a href="/reset_password/">重置密码</a></li>
+                            {% endif %}
+{#                            添加css#}
+                        <style>
+                            .new_login_about:hover{
+                                color: #F44336 !important;
+                                background-color: transparent;
+
+                            }
+                            .agileinfo-social-grids ul li a{
+                                font-weight: 600;
+                                text-decoration: none;
+
+                            }
+                            .agileinfo-social-grids ul li a:hover{
+                                color: #F44336 !important;
+
+                            }
+                        </style>
+
 						</ul>
 					</div>
 					<div class="clearfix"> </div>
@@ -57,6 +91,7 @@
 				<div class="clearfix"> </div>
 			</div>
 		</div>
+
 		<div class="w3layouts-banner-slider">
 			<div class="container">
 				<div class="slider">
@@ -98,7 +133,7 @@
 							  $('.events').append("<li>after event fired.</li>");
 							}
 						  });
-					
+
 						});
 					 </script>
 					<!--banner Slider starts Here-->
@@ -107,6 +142,14 @@
 		</div>
 	</div>
 	<!-- //banner -->
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
 	<!-- banner-bottom -->
 	<div class="welcome">
 		<div class="container">
