@@ -2,72 +2,29 @@
 {% block title %}修改个人信息{% endblock %}
 {% block css %}
     <link href="{% static 'login/auth.css' %}" rel="stylesheet"/>
+{#    自定义覆盖css#}
+    <style>
+        .lowin .lowin-wrapper {
+            width: 800px;
+        }
+        .all_float{
+            position:relative;
+        }
+        .float_left{
+            float: left;
+            width: 300px;
+            margin-left: 50px;
+        }
+        .float_right_last{
+            float: right;
+            width: 300px;
+            margin-right: 50px;
+    }
+    </style>
 {% endblock %}
 
 {% block content %}
-{#    试验#}
-    <!-- banner -->
-	<div class="banner" style="background-image: none;">
-		<div class="header">
-			<div class="container">
-				<div class="header-left">
-					<div class="w3layouts-logo">
-						<h1>
-							<a href="/">懂<span>Ta</span></a>
-						</h1>
-					</div>
-				</div>
-				<div class="header-right">
-					<div class="top-nav">
-						<nav class="navbar navbar-default">
-								<div class="navbar-header">
-									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-									</button>
-								</div>
-							<!-- Collect the nav links, forms, and other content for toggling -->
-							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-								<ul class="nav navbar-nav">
-									<li><a class="active" href="/">首页</a></li>
-									<li><a href="about.html">商品</a></li>
-									<li class="">
-                                        <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            公告区
-                                            <span class="caret"></span>
-                                        </a>
-										<ul class="dropdown-menu">
-											<li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
-											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
-										</ul>
-									</li>
-									<li><a href="gallery.html">明星宠物墙</a></li>
-									<li><a href="#week_news">每周科普</a></li>
-									<li><a href="contact.html">关于我们</a></li>
-								</ul>
-								<div class="clearfix"> </div>
-							</div>
-						</nav>
-					</div>
-					<div class="agileinfo-social-grids">
-						<ul>
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-rss"></i></a></li>
-						</ul>
-					</div>
-{#					<div class="clearfix"> </div>#}
-				</div>
-{#				<div class="clearfix"> </div>#}
-			</div>
-		</div>
-
-	</div>
-	<!-- //banner -->
-
-        <div class="lowin lowin-red" style="height:600px;background:url({% static 'login/mycat2.jpg' %})">
+    <div class="lowin lowin-red" style="height:800px;background:url({% static 'login/mycat2.jpg' %})">
 		<div class="lowin-brand">
 			<img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
 		</div>
@@ -82,69 +39,83 @@
                         {% endif %}
                         {% csrf_token %}
 
-                        <div class="lowin-group">
+
+{#                    分左右两边#}
+                        <div class="all_float">
+
+                            <div class="float_left">
+
+                                 <div class="lowin-group">
+                                    <label>{{ modify_form.username.label_tag }}</label>
+                                    {{ modify_form.username }}
+                                </div>
+                                <div class="lowin-group">
+                                    <label>{{ modify_form.sex.label_tag }}</label>
+                                    {{ modify_form.sex }}
+                                </div>
+                                <div class="lowin-group">
+                                    <label>{{ modify_form.petname.label_tag }}</label>
+                                    {{ modify_form.petname }}
+                                </div>
+                                <div class="lowin-group">
+                                    <label>{{ modify_form.pet_type.label_tag }}</label>
+                                    {{ modify_form.pet_type }}
+                                </div>
+                            </div>
+
+                             <div class="float_right_last">
+
+                                <div class="lowin-group">
+                                    <label>{{ modify_form.intro.label_tag }}</label>
+                                    {{ modify_form.intro }}
+                                </div>
+                                <br/>
+                                <div class="lowin-group">
+                                    <p style="text-align: left;">上传新头像:</p>
+                                    <input type="file" name="new_photo">
+                                </div>
+
+                                 <br/><br/>
+                                <div class="lowin-group">
+                                    {{ modify_form.captcha.errors }}
+                                    <label>验证码:</label>
+                                    <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                                    <span class="v5-yzm fr">
+                                        <a href="#" class="next-captcha">
+                                            <img src="{{ image_url }}" class="captcha" alt="captcha">
+                                            换一张
+                                        </a>
+                                    </span>
+                                    <input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+                                </div>
+
+                                <script>
+                                      {# 刷新验证码#}
+                                      $(".next-captcha").click(function(){
+                                          $.getJSON("/captcha/refresh", function(data) {
+                                              $(".captcha").attr('src',data.image_url);
+                                              $("#id_reg_captcha_0").attr('value',data.key);
+                                          })
+                                      })
+                                </script>
+
+                            </div>
+
+                        </div>
+
+
+{#                    右浮#}
 
 
 
-
-							<label>{{ login_form.username.label_tag }}</label>
-                            {{ login_form.username }}
-						</div>
-
-
-
-
-<div class="container">
-    <div class="col-md-4 col-md-offset-4">
-        <form class='form-modify' action="/modify/" method="post" enctype="multipart/form-data">
-
-            {% if message %}
-                <div class="alert alert-warning">{{ message }}</div>
-            {% endif %}
-            {% csrf_token %}
-            <h2 class="text-center">修改个人信息</h2>
-            <div class="form-group">
-                {{ modify_form.username.label_tag }}
-                {{ modify_form.username }}
-            </div>
-            <div class="form-group">
-                {{ modify_form.sex.label_tag }}
-                {{ modify_form.sex }}
-            </div>
-            <div class="form-group">
-                {{ modify_form.petname.label_tag }}
-                {{ modify_form.petname }}
-            </div>
-            <div class="form-group">
-                {{ modify_form.pet_type.label_tag }}
-                {{ modify_form.pet_type }}
-            </div>
-            <div class="form-group">
-                {{ modify_form.intro.label_tag }}
-                {{ modify_form.intro }}
-            </div>
-            <!-- 上传头像功能等其他的更新完毕后再测试 -->
-            <div class="form-group">
-                <p>当前头像:</p>
-                <img src="{{ MEDIA_URL}}{{ user.photo }}">
-            </div>             
-            <div class="form-group">
-                <p>上传新头像:</p>
-                <input type="file" name="new_photo">
-            </div> 
+                        <button type="submit" class="lowin-btn login-btn" style="margin-left: 30px;width: 90%;">
+							提交修改
+						</button>
+                    </form>
+                </div>
+			</div>
+        </div>
+    </div>
 
 
-            <div class="form-group">
-                {{ modify_form.captcha.errors }}
-                {{ modify_form.captcha.label_tag }}
-                {{ modify_form.captcha }}
-            </div>
-
-            <button type="reset" class="btnbtn-default pull-left">重置</button>
-            <button type="submit" class="btnbtn-primary pull-right">提交</button>
-        </form>
-
-
-    </div> <!-- /container -->
-</div>
 {% endblock %}

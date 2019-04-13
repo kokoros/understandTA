@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}修改个人信息成功{% endblock %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
+
 {% block content %}
-    <h1>修改个人信息成功!</h1>
+    <div class="lowin lowin-red" style="height:300px;background:url({% static 'login/mycat2.jpg' %});">
+        <h1>修改个人信息成功!</h1>
+    </div>
 {% endblock %}

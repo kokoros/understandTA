@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+#coding:utf-8
+
+from django.shortcuts import render, redirect ,render_to_response
 from login import models
 from login import forms
 import hashlib
@@ -12,11 +14,54 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 #导入Q查询
 from django.db.models import Q
+#导入json解决cookies无法存入中文的问题
+import json
 
 # Create your views here.
 
+#做一个判断有没有cookies的函数
+def judeg_cookies(request):
+    if 'username' in request.COOKIES and 'password' in request.COOKIES:
+        #获取cookies
+        username = request.COOKIES.get('username', None)
+        print('未解码前:', username)
+        username = json.loads(username)
+        print('解码后:', username)
+        password = request.COOKIES.get('password', None)
+        print('username', username)
+        print(password)
+        try:
+            # 判断是否是数据库中的用户
+            user = models.User.objects.get(name=username)
+        except Exception as e:
+            print('获取用户对象失败:',e)
+        #如果密码是对的
+        if password == user.password:
+            print('密码不正确')
+            # 设置session
+            request.session['is_login'] = True
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.name
+
+            return redirect("/")
+        #删除错误的cookies并重定向到登录界面
+        else:
+            obj_cookies = redirect('/login')
+            # 删除用户和哈希值密码的cookies
+            obj_cookies.delete_cookie('username')
+            obj_cookies.delete_cookie('password')
+            return obj_cookies
+    #如果没有cookies
+    else:
+        pass
+
+
+
+
 #登录
 def login(request):
+    #判断有没有cookies
+    judeg_cookies(request)
     if request.session.get('is_login', None):
         return redirect("/")
     if request.method == "POST":
@@ -34,14 +79,33 @@ def login(request):
                     message = "您还未通过邮件确认注册"
                     hashkey = CaptchaStore.generate_key()
                     image_url = captcha_image_url(hashkey)
-                    return render(request,'login/login.html', locals())
+                    return render(request, 'login/login.html', locals())
                 #哈希值和数据库值对比
                 if user.password == hash_code(password):
+                    #设置session
                     request.session['is_login'] = True
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
-                    #把重置密码状态改为false
-                    return redirect('/')
+                    #如果勾选了记住密码
+                    if request.POST.get('chocookies', None):
+                        #传递cookies
+                        print(request.POST.get('chocookies'))
+                        try:
+                            obj_cookies = render(request, 'login/home.html', locals())
+                            #保存用户和哈希值密码3天
+                            #保存为json
+                            save_username = json.dumps(user.name)
+                            print(save_username)
+
+                            obj_cookies.set_cookie('username', save_username, max_age=3*24*60*60)
+                            obj_cookies.set_cookie('password', user.password, max_age=3*24*60*60)
+                            print('obj_cookies', obj_cookies)
+                            return obj_cookies
+                        except Exception as e:
+                            print('保存cookies失败:', e)
+                    #如果不存cookies
+                    else:
+                        return redirect('/')
                 else:
                     message = "密码不正确哦"
             except:
@@ -209,7 +273,11 @@ def logout(request):
         return redirect("/")
     #清空session中的内容
     request.session.flush()
-    return redirect("/")
+    obj_cookies = redirect('/')
+    # 删除用户和哈希值密码的cookies
+    obj_cookies.delete_cookie('username')
+    obj_cookies.delete_cookie('password')
+    return obj_cookies
 
 #密码哈希值加密
 def hash_code(s,salt='mysite'):
@@ -227,7 +295,7 @@ def change_password(request):
         
         #加载修改密码的form表
         change_password_form = forms.ChangepasswordForm(request.POST)
-        message = "所有字段都必须填写哦~"
+        message = "所有字段都必须填写正确哦~"
         try:
             #获取此时登录的用户名
             username = request.session['user_name']
@@ -444,7 +512,9 @@ def modify(request):
         #获取此时登录的用户名
         username = request.session['user_name']
         #获取当前登录的用户对象
-        user = models.User.objects.get(name=username) 
+        user = models.User.objects.get(name=username)
+        #获取当前用户的头像
+        photo = user.photo
         # print(user.name)
     except:
         message = "无法获取当前用户名"  
@@ -469,6 +539,8 @@ def modify(request):
                 #如果用户名存在
                 if same_name_user:
                     message = "用户名已存在,请重新输入"
+                    hashkey = CaptchaStore.generate_key()
+                    image_url = captcha_image_url(hashkey)
                     return render(request, 'login/modify.html', locals())
             #一切都ok时,改变数据库
             user.name = username
@@ -519,8 +591,15 @@ def modify(request):
     'pet_type':user.pet_type,
     'intro':user.intro})
 
+    hashkey = CaptchaStore.generate_key()
+    image_url = captcha_image_url(hashkey)
     return render(request, 'login/modify.html', locals()) 
 
 def home(request):
+    #判断有没有cookies
+    judeg_cookies(request)
     return render(request, 'login/home.html')
 
+#关于我们
+def aboutus(request):
+    return render(request, 'login/aboutus.html')

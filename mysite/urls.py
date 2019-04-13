@@ -41,21 +41,19 @@ urlpatterns = [
     path('change_password/',views.change_password),
     #确认邮件确认请求
     path('confirm/',views.user_confirm),
-    
     #申请重置密码的界面
     path('reset_password/',views.reset_password),
-    
     #真正重置密码的界面
     path('reset_password_ready/',views.reset_password_ready),
-    
     #展示个人信息
     path('information/', views.information),
-
     #修改个人信息
     path('modify/', views.modify),
-
     # 首页 /
     path('', views.home),
+    #关于我们
+    path('aboutus/', views.aboutus),
+
 
     #导入polls中的路由
     path(r'pet', polls_views.pets),

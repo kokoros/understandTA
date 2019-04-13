@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}关于我们{% endblock %}
+
+{#导入css#}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="about">
+		<!-- about-top -->
+		<div class="agileits-about-top">
+			<div class="container">
+				<div class="agileits-about-top-heading" style="background:url({% static 'login/mycat2.jpg' %});">
+					<h3>Who we are</h3>
+				</div>
+				<div class="agileinfo-top-grids">
+					<div class="col-sm-12 wthree-top-grid">
+                        <h1 style="text-align: center;">头发总和我作队</h1>
+						<img src={% static 'login/kodinger.jpeg' %} alt="团队头像" style="margin-left: 15%;width:70%;">
+						<h1 style="text-align: center;">只要我们代码写得够快,头发就追不上我们</h1>
+					</div>
+
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+		<!-- //about-top -->
+
+		<!-- choose -->
+		<div class="w3-agileits-choose" style="background: url({% static 'login/mycat_big.jpg' %}) no-repeat 0px 0px;">
+			<div class="container">
+				<div class="agileits-about-top-heading agileits-w3layouts-choose-heading">
+					<h3>为何选择我们</h3>
+				</div>
+				<div class="agile-choose-grids">
+					<div class="col-sm-4 agile-choose-grid">
+						<div class="choose-icon">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</div>
+						<div class="choose-info">
+							<h4>公益</h4>
+							<p>领养和寻宠服务,为您的TA扩散希望</p>
+						</div>
+					</div>
+					<div class="col-sm-4 agile-choose-grid">
+						<div class="choose-icon">
+							<i class="fa fa-cogs" aria-hidden="true"></i>
+						</div>
+						<div class="choose-info">
+							<h4>私人定制</h4>
+							<p>为您个性化提供最适合您的服务</p>
+						</div>
+					</div>
+					<div class="col-sm-4 agile-choose-grid">
+						<div class="choose-icon">
+							<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+						</div>
+						<div class="choose-info">
+							<h4>精选商家</h4>
+							<p>精选专业的繁育机构和商品</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- //choose -->
+		<!-- team -->
+		<div class="team">
+			<div class="container">
+				<div class="agile_team_grids">
+					<div class="col-md-3 agile_team_grid">
+						<div class="agile_team_grid_main">
+							<img src="{% static 'images/a1.jpg' %}" alt="头像" class="img-responsive">
+							<div class="p-mask">
+								<ul class="top-links two">
+									<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#"><i class="fa fa-github"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="agile_team_grid1">
+							<h3>廖正华</h3>
+							<p>电商负责人</p>
+						</div>
+					</div>
+					<div class="col-md-3 agile_team_grid">
+						<div class="agile_team_grid_main">
+							<img src="{% static 'login/1_small.jpg' %}" alt="头像" class="img-responsive">
+							<div class="p-mask">
+								<ul class="top-links two">
+									<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#"><i class="fa fa-github"></i></a></li>
+								</ul>
+
+							</div>
+						</div>
+						<div class="agile_team_grid1">
+							<h3>吴琪</h3>
+							<p>用户系统负责人</p>
+						</div>
+
+					</div>
+					<div class="col-md-3 agile_team_grid three">
+						<div class="agile_team_grid_main">
+							<img src="{% static 'images/a2.jpg' %}" alt=" " class="img-responsive" >
+							<div class="p-mask">
+								<ul class="top-links two">
+                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#"><i class="fa fa-github"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="agile_team_grid1">
+							<h3>郭飞</h3>
+							<p>繁育机构负责人</p>
+						</div>
+					</div>
+
+					<div class="col-md-3 agile_team_grid four">
+						<div class="agile_team_grid_main">
+							<img src="{% static 'images/a3.jpg' %}" alt=" " class="img-responsive">
+							<div class="p-mask">
+								<ul class="top-links two">
+                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#"><i class="fa fa-github"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="agile_team_grid1">
+							<h3>邓大爷</h3>
+							<p>公告负责人</p>
+						</div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+		<!-- //team -->
+	</div>
+
+
+
+{% endblock %}

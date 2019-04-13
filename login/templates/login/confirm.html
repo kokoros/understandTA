@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}邮件确认{% endblock %}
-{% block content %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 
-    <div class="row">
-        <h1 class="text-center">{{ message }}</h1>
+{% block content %}
+    <div class="lowin lowin-red" style="height:300px;background:url({% static 'login/mycat2.jpg' %});">
+        <h1>{{ message }}</h1>
     </div>
     <!-- 2s后自动跳转到登录界面 -->
     <script>

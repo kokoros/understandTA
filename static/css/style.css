@@ -1061,7 +1061,7 @@ footer{
 .p-mask ul li a {
     text-align: center;
 }
-.p-mask ul li a i.fa.fa-facebook, .p-mask ul li a i.fa.fa-twitter, .p-mask ul li a i.fa.fa-linkedin,.p-mask ul li a i.fa.fa-google-plus{
+.p-mask ul li a i.fa.fa-facebook, .p-mask ul li a i.fa.fa-twitter, .p-mask ul li a i.fa.fa-github,.p-mask ul li a i.fa.fa-instagram{
     height: 30px;
     width: 30px;
     border: solid 2px #FFFFFF;
@@ -1074,7 +1074,7 @@ footer{
     -o-transition: 0.5s all;
     -ms-transition: 0.5s all;
 }
-.p-mask ul li a i.fa.fa-facebook:hover {
+.p-mask ul li a i.fa.fa-instagram:hover {
 	border: solid 2px #3b5998;
 	background:#3b5998;
     color: #FFFFFF;
@@ -1084,7 +1084,7 @@ footer{
 	background:#55acee;
 	color: #FFFFFF;
 }
-.p-mask ul li a i.fa.fa-linkedin:hover{
+.p-mask ul li a i.fa.fa-github:hover{
 	border: solid 2px #0077b5;
 	background:#0077b5;
 	color: #FFFFFF;

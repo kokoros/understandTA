@@ -35,6 +35,10 @@
                             {{ login_form.captcha.errors }}
                             <label>验证码:</label>
                             <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+
+                            {#设置验证码图片和记住密码#}
+                            <div>
+
                             <span class="v5-yzm fr">
                                 <a href="#" class="next-captcha">
                                     <img src="{{ image_url }}" class="captcha" alt="captcha">
@@ -42,7 +46,19 @@
                                 </a>
                             </span>
                             <input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
-                        </div>
+
+
+                            <div id="savepassword">
+                            <input type="checkbox" name="chocookies" id="chocookies"><label for="chocookies" style="width:80px;">记住密码</label>
+                            </div>
+
+                            </div>
+                            <style>
+                                #savepassword{
+                                    float: right !important;
+                                    margin-top: 10px;
+                                }
+                            </style>
 
                             <script>
                               {# 刷新验证码#}
@@ -53,6 +69,7 @@
                                   })
                               })
                             </script>
+
 
                         <button type="submit" class="lowin-btn login-btn">
 							登录

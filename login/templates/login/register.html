@@ -3,10 +3,6 @@
 {% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 {% block content %}
 
-
-{#    试验#}
-
-
 	<div class="lowin lowin-red" style="height:1500px;background:url({% static 'login/mycat.jpg' %});">
 		<div class="lowin-brand">
 			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo">
@@ -94,7 +90,8 @@
 
 
                         <div class="lowin-group">
-                            {{ login_form.captcha.errors }}
+                            {{ register_form.captcha.errors }}
+                            <label>验证码:</label>
                             <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
                             <span class="v5-yzm fr">
                                 <a href="#" class="next-captcha">

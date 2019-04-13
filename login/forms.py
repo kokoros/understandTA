@@ -24,7 +24,7 @@ class RegisterForm(forms.Form):
     sex = forms.ChoiceField(label="性别",choices=gender,initial="unkown")
     petname = forms.CharField(label="宠物名",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入主子名'}))
     pet_type = forms.CharField(label="宠物种类",max_length=128,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入主子种类'}))
-    intro = forms.CharField(label="一句话简介",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入个人简介'}))
+    intro = forms.CharField(label="个性签名",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'lowin-input', 'placeholder' : '请输入个性签名'}))
     # photo = forms.CharField(label="头像",max_length=1024,initial="不详",widget=forms.TextInput(attrs={'class':'form-control'}))
     captcha = CaptchaField(label="验证码")
 
@@ -51,10 +51,10 @@ class ModifyForm(forms.Form):
         ('unkown','不详')
     )
     
-    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
+    username = forms.CharField(label="用户名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input'}))
     sex = forms.ChoiceField(label="性别",choices=gender)
-    petname = forms.CharField(label="宠物名",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
-    pet_type = forms.CharField(label="宠物种类",max_length=128,widget=forms.TextInput(attrs={'class':'form-control'}))
-    intro = forms.CharField(label="简介",max_length=1024,widget=forms.TextInput(attrs={'class':'form-control'}))
+    petname = forms.CharField(label="宠物名",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input'}))
+    pet_type = forms.CharField(label="宠物种类",max_length=128,widget=forms.TextInput(attrs={'class':'lowin-input'}))
+    intro = forms.CharField(label="个性签名",max_length=1024,widget=forms.TextInput(attrs={'class':'lowin-input'}))
     captcha = CaptchaField(label="验证码")
 

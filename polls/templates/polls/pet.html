@@ -74,7 +74,7 @@
  {% for pr in posts %}   
  <!-- 循环数据 -->
 <div class="forcont"> 
-        <img id='imgp' src="{{pr.ppath}}" > 
+        <img id='imgp' src="{% static pr.ppath %}" >
         <br>  
         <p id='p1' class="con">
         收藏量:{{pr.pnumber}}  &nbsp;&nbsp; 
