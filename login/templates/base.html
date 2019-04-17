@@ -16,36 +16,36 @@
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-{#            <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
-{#            <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>#}
-        <![endif]-->    
+
         {% block css %}{% endblock %}
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- bootstrap-css -->
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
-<!--// bootstrap-css -->
-<!-- css -->
-<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
-<!--// css -->
-<!-- font-awesome icons -->
-<link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
-<!-- //font-awesome icons -->
 
-<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+        <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <!-- bootstrap-css -->
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <!--// bootstrap-css -->
+        <!-- css -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+        <!--// css -->
+        <!-- font-awesome icons -->
+        <link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+        <!-- //font-awesome icons -->
 
-<script src="{% static 'js/bootstrap.js' %}"></script>
-<script type="text/javascript">
+        <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$(".scroll").click(function(event){
 			event.preventDefault();
 			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 		});
 	});
-</script>
+        </script>
     </head>
+
     <body>
-            {% block headfirst %}
+        {% block headfirst %}
 		<div class="header">
 			<div class="container">
 				<div class="header-left">
@@ -55,40 +55,41 @@
 						</h1>
 					</div>
 				</div>
-				<div class="header-right">
-					<div class="top-nav">
-						<nav class="navbar navbar-default">
-								<div class="navbar-header">
-									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-									</button>
-								</div>
+
+                <div class="header-right">
+                <div class="top-nav">
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
 							<!-- Collect the nav links, forms, and other content for toggling -->
-							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-								<ul class="nav navbar-nav">
-									<li><a class="active" href="/">首页</a></li>
-									<li><a href="about.html">商品</a></li>
-									<li class="">
-                                        <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a class="active" href="/">首页</a></li>
+                                <li><a href="about.html">商品</a></li>
+                                <li class="">
+                                    <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             公告区
-                                            <span class="caret"></span>
-                                        </a>
-										<ul class="dropdown-menu">
-											<li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
-											<li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
-										</ul>
-									</li>
-									<li><a href="gallery.html">明星宠物墙</a></li>
-									<li><a href="#week_news">每周科普</a></li>
-									<li><a href="/aboutus/">关于我们</a></li>
-								</ul>
-								<div class="clearfix"> </div>
-							</div>
-						</nav>
-					</div>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
+                                        <li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="gallery.html">明星宠物墙</a></li>
+                                <li><a href="#week_news">每周科普</a></li>
+                                <li><a href="/aboutus/">关于我们</a></li>
+                            </ul>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </nav>
+                </div>
 					<div class="agileinfo-social-grids">
 						<ul>
 							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -127,8 +128,8 @@
 						</ul>
 					</div>
 					<div class="clearfix"> </div>
-				</div>
-				<div class="clearfix"> </div>
+            </div>
+                <div class="clearfix"> </div>
 			</div>
 		</div>
         {% endblock %}
@@ -136,75 +137,75 @@
 
 
 
-            {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
 
 	<!-- footer -->
-	<footer>
-		<div class="container">
-			<div class="agileits-w3layouts-footer-grids">
-				<div class="col-md-4 footer-left">
-					<h3>
-						<a href="/">懂 <span>TA</span></a>
-					</h3>
-					<div class="footer-social-grids">
-						<ul>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-4 footer-left">
-					<h4>快速导航</h4>
-					<div class="col-md-6 footer-grid-left">
-						<ul>
-							<li><a class="active" href="/">主页</a></li>
-							<li><a href="/aboutus/">关于我们</a></li>
-							<li><a href="gallery.html">明星宠物墙</a></li>
-							<li><a href="/#week_news">每周科普</a></li>
-						</ul>
-					</div>
-					<div class="col-md-6 footer-grid-left">
-						<ul>
-							<li><a href="typography.html">精选商品</a></li>
-							<li><a href="blog.html">合作商家</a></li>
-						</ul>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="col-md-4 footer-left">
-					<h4>为了TA</h4>
-					<p>
-                        终身伴侣,精心呵护
-                        <br/><br/><br/>
-                        终身铲屎
-                    </p>
+        <footer>
+            <div class="container">
+                <div class="agileits-w3layouts-footer-grids">
+                    <div class="col-md-4 footer-left">
+                        <h3>
+                            <a href="/">懂 <span>TA</span></a>
+                        </h3>
+                        <div class="footer-social-grids">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 footer-left">
+                        <h4>快速导航</h4>
+                        <div class="col-md-6 footer-grid-left">
+                            <ul>
+                                <li><a class="active" href="/">主页</a></li>
+                                <li><a href="/aboutus/">关于我们</a></li>
+                                <li><a href="gallery.html">明星宠物墙</a></li>
+                                <li><a href="/#week_news">每周科普</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 footer-grid-left">
+                            <ul>
+                                <li><a href="typography.html">精选商品</a></li>
+                                <li><a href="blog.html">合作商家</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="col-md-4 footer-left">
+                        <h4>为了TA</h4>
+                        <p>
+                            终身伴侣,精心呵护
+                            <br/><br/><br/>
+                            终身铲屎
+                        </p>
 
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</footer>
-	<!-- footer -->
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </footer>
+	    <!-- footer -->
 
-	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
-	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/easing.js'%}"></script>
-	<!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function($) {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear'
-				};
-			*/
+	    <script src="{% static 'js/responsiveslides.min.js' %}"></script>
+	    <script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/easing.js'%}"></script>
+	    <!-- here stars scrolling icon -->
+	    <script type="text/javascript">
+            $(document).ready(function($) {
+                /*
+                    var defaults = {
+                    containerID: 'toTop', // fading element id
+                    containerHoverID: 'toTopHover', // fading element hover id
+                    scrollSpeed: 1200,
+                    easingType: 'linear'
+                    };
+                */
 
-			$().UItoTop({ easingType: 'easeOutQuart' });
+                $().UItoTop({ easingType: 'easeOutQuart' });
 
-			});
-	</script>
+                });
+	    </script>
 <!-- //here ends scrolling icon -->
 
 
@@ -213,13 +214,14 @@
 
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-            <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+{#            <script src="{% static 'js/jquery-3.3.1.js' %}"></script>#}
 
             <!-- Include all compiled plugins (below), or include individual files as needed -->        
 {#            <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>#}
 
 
 
-    </body>
+
+</body>
 {% block csslast %}{% endblock %}
 </html>

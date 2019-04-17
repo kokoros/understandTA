@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}登录{% endblock %}
-{% block css %}
-    <link href="{% static 'login/auth.css' %}" rel="stylesheet"/>
-
-{% endblock %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
 
 {% block content %}
 
 	<div class="lowin lowin-red" style="height:900px;background:url({% static 'login/mycat.jpg' %});">
-		<div class="lowin-brand">
-			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo">
+		<div class="lowin-brand" style="background: white;">
+			<img src="{% static 'login/kodinger.jpeg' %}" alt="logo"/>
 		</div>
 		<div class="lowin-wrapper">
 			<div class="lowin-box lowin-login">
@@ -27,7 +24,11 @@
 						</div>
 
 						<div class="lowin-group password-group">
-							<label>{{ login_form.password.label_tag }} <a href="/reset_password/" class="forgot-link">忘记密码?</a></label>
+							<label>{{ login_form.password.label_tag }}
+                                <a href="/reset_password/" class="forgot-link">
+                                    忘记密码?
+                                </a>
+                            </label>
                             {{ login_form.password }}
 						</div>
 
@@ -37,7 +38,8 @@
                             <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
 
                             {#设置验证码图片和记住密码#}
-                            <div>
+                        </div>
+
 
                             <span class="v5-yzm fr">
                                 <a href="#" class="next-captcha">
@@ -49,10 +51,11 @@
 
 
                             <div id="savepassword">
-                            <input type="checkbox" name="chocookies" id="chocookies"><label for="chocookies" style="width:80px;">记住密码</label>
+                            <input type="checkbox" name="chocookies" id="chocookies">
+                                <label for="chocookies" style="width:80px;">记住密码</label>
                             </div>
 
-                            </div>
+
                             <style>
                                 #savepassword{
                                     float: right !important;
@@ -79,9 +82,13 @@
 						</div>
                     </form>
                 </div>
-			</div>
+            </div>
         </div>
+
     </div>
 
 
+<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>
+
 {% endblock %}
+

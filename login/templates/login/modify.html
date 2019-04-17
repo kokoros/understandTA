@@ -26,7 +26,9 @@
 {% block content %}
     <div class="lowin lowin-red" style="height:800px;background:url({% static 'login/mycat2.jpg' %})">
 		<div class="lowin-brand">
-			<img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
+            <a href="/head_photo">
+			    <img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
+            </a>
 		</div>
 		<div class="lowin-wrapper">
 			<div class="lowin-box lowin-login">
@@ -70,9 +72,13 @@
                                     {{ modify_form.intro }}
                                 </div>
                                 <br/>
-                                <div class="lowin-group">
+                                <div class="lowin-group" id="showTemp">
                                     <p style="text-align: left;">上传新头像:</p>
                                     <input type="file" name="new_photo">
+{#                                    裁剪头像的超链接#}
+                                    <a href="/head_photo">
+                                        图片原始尺寸不满意?点我或者点头像~享受在线裁剪的快感
+                                    </a>
                                 </div>
 
                                  <br/><br/>
@@ -118,4 +124,9 @@
     </div>
 
 
+
+
+{% endblock %}
+
+{% block csslast %}
 {% endblock %}

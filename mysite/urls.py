@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from login import views 
-from django.conf.urls import include
+from django.conf.urls import include, url
 
 #为用户上传的文件提供服务
 from django.conf.urls.static import static
@@ -53,6 +53,11 @@ urlpatterns = [
     path('', views.home),
     #关于我们
     path('aboutus/', views.aboutus),
+
+    # 试验裁剪并上传头像
+    path('head_photo/', views.head_photo),
+    #试验处理裁剪提交
+    path('handing_head/', views.handing_head),
 
 
     #导入polls中的路由

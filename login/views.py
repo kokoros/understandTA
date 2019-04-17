@@ -1,6 +1,6 @@
 #coding:utf-8
 
-from django.shortcuts import render, redirect ,render_to_response
+from django.shortcuts import render, redirect ,HttpResponse
 from login import models
 from login import forms
 import hashlib
@@ -16,6 +16,18 @@ from captcha.helpers import captcha_image_url
 from django.db.models import Q
 #导入json解决cookies无法存入中文的问题
 import json
+#导入json响应 方便裁剪图片
+from django.http import JsonResponse
+
+#导入取消验证来解决ajax总被拒绝的问题
+from django.views.decorators.csrf import csrf_exempt
+
+#导入裁剪图片
+from PIL import Image
+
+#随机生成头像名称
+import uuid
+
 
 # Create your views here.
 
@@ -603,3 +615,117 @@ def home(request):
 #关于我们
 def aboutus(request):
     return render(request, 'login/aboutus.html')
+
+# 试验上传并裁剪图片
+def head_photo(request):
+    try:
+        #获取此时登录的用户名
+        username = request.session['user_name']
+        #获取当前登录的用户对象
+        user = models.User.objects.get(name=username)
+        #从数据库中获取当前用户的头像的相对路径
+        photo = user.photo
+
+        # print(photo)
+    except Exception as e:
+        print('读取当前用户名错误:',e)
+    return render(request, 'login/head_photo.html',locals())
+
+# 取消csrf认证
+@csrf_exempt
+#试验处理裁剪图片的提交
+def handing_head(request):
+    try:
+        #获取此时登录的用户名
+        username = request.session['user_name']
+        #获取当前登录的用户对象
+        user = models.User.objects.get(name=username)
+        #从数据库中获取当前用户的头像的相对路径
+        photo = user.photo
+
+        # print(photo)
+    except Exception as e:
+        print('读取当前用户名错误:',e)
+
+    if request.method == 'POST':
+        # 如果用户上传了头像
+        if request.FILES.get('avatar_file', None):
+            print('post请求接受')
+
+            # 获取头像对象
+            img = request.FILES['avatar_file']
+            # 获取ajax返回的图片坐标
+            data = request.POST['avatar_data']
+            if img.size / 1024 > 700:
+                return JsonResponse({"message": "原图片尺寸应小于900 X 1200 像素, 请重新上传。", })
+
+            #数据库中的原图片路径
+            current_avatar = user.photo
+            # 根据传来的数据裁剪图片
+            #传入原头像路径,本次头像对象,裁剪参数,用户id
+            cropped_avatar = crop_image(current_avatar, img, data, user.id)
+
+
+
+            #更新数据库中图片路径
+            user.photo = cropped_avatar
+            print('存入数据库的新图片:',user.photo)
+            #保存更新
+            user.save()
+            print("图片路径:", user.photo.url)
+
+            # 向前端返回一个json，result值是图片路径
+            js_obj = {"result": user.photo.url }
+            return JsonResponse(js_obj)
+
+        else:
+            return JsonResponse({"msg": "请重新上传。只能上传图片"})
+    #如果不是post请求
+
+
+
+
+
+
+#裁剪图片
+def crop_image(current_avatar , file, data, uid):
+    #自定义路径
+    #文件后缀保留
+    ext = file.name.split('.')[-1]
+    file_name = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
+    print(file_name)
+    #组合路径 以用户id为文件夹
+    cropped_avatar = os.path.join(str(uid), "avatar", file_name)
+    #相对media的路径
+    file_path = os.path.join("media", str(uid), "avatar", file_name)
+
+    # 获取Ajax发送的裁剪参数data，先用json解析。
+    coords = json.loads(data)
+    t_x = int(coords['x'])
+    t_y = int(coords['y'])
+    t_width = t_x + int(coords['width'])
+    t_height = t_y + int(coords['height'])
+    t_rotate = coords['rotate']
+
+    # 裁剪图片,压缩尺寸为400*400。
+    #打开原图片
+    img = Image.open(file)
+    #根据坐标裁剪
+    crop_im = img.crop((t_x, t_y, t_width, t_height)).resize((400, 400), Image.ANTIALIAS).rotate(t_rotate)
+    #去掉文件名,返回目录avatar
+    directory = os.path.dirname(file_path)
+    #如果用户目录下有avatar文件夹
+    if os.path.exists(directory):
+        crop_im.save(file_path)
+    # 如果用户目录没有avatar文件夹
+    else:
+        os.makedirs(directory)
+        crop_im.save(file_path)
+
+    # 如果改变前数据库的头像路径不是默认头像，删除老头像图片, 节省空间
+    if not current_avatar == os.path.join("avatar", "default.jpg"):
+        #os.path.basename()返回文件名
+        current_avatar_path = os.path.join("media", str(uid), "avatar", os.path.basename(current_avatar.url))
+        os.remove(current_avatar_path)
+    #返回目前图片以用户id文件夹开始的路径
+    return cropped_avatar
