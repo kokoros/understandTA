@@ -49,11 +49,14 @@ def judeg_cookies(request):
             print('获取用户对象失败:',e)
         #如果密码是对的
         if password == user.password:
-            print('密码不正确')
+            print('密码正确')
             # 设置session
             request.session['is_login'] = True
             request.session['user_id'] = user.id
             request.session['user_name'] = user.name
+            #session中添加请求源 如果直接是通过输入网址后点击跳转的,则返回首页
+            # print(request.META.get('HTTP_REFERER', '/'))
+            request.session['url'] = request.META.get('HTTP_REFERER', '/')
 
             return redirect("/")
         #删除错误的cookies并重定向到登录界面
@@ -85,7 +88,6 @@ def login(request):
             try:
                 # 判断是否是邮箱或者用户名
                 user = models.User.objects.get(Q(name=username) | Q(email=username))
-                print(user)
                 #判断是否通过邮件确认
                 if not user.has_confirmed:
                     message = "您还未通过邮件确认注册"
@@ -98,26 +100,27 @@ def login(request):
                     request.session['is_login'] = True
                     request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
+                    #读取session
+                    url = request.session['url']
                     #如果勾选了记住密码
                     if request.POST.get('chocookies', None):
                         #传递cookies
-                        print(request.POST.get('chocookies'))
                         try:
-                            obj_cookies = render(request, 'login/home.html', locals())
+                            obj_cookies = redirect(url, locals())
                             #保存用户和哈希值密码3天
                             #保存为json
                             save_username = json.dumps(user.name)
-                            print(save_username)
 
                             obj_cookies.set_cookie('username', save_username, max_age=3*24*60*60)
                             obj_cookies.set_cookie('password', user.password, max_age=3*24*60*60)
-                            print('obj_cookies', obj_cookies)
+
                             return obj_cookies
                         except Exception as e:
                             print('保存cookies失败:', e)
                     #如果不存cookies
                     else:
-                        return redirect('/')
+                        #跳转到get进入登录页面前的一个页面
+                        return redirect(url)
                 else:
                     message = "密码不正确哦"
             except:
@@ -125,11 +128,19 @@ def login(request):
         hashkey = CaptchaStore.generate_key()
         image_url = captcha_image_url(hashkey)
         return render(request, "login/login.html", locals())
+    #如果是get请求
+    else:
+        #如果是判断邮箱验证的网址跳转的,就不记录了,跳到首页
+        if 'confirm' in request.META.get('HTTP_REFERER', '/'):
+            request.session['url'] = '/'
+        else:
+            #无论登录成功与否,都保存请求源进session
+            request.session['url'] = request.META.get('HTTP_REFERER', '/')
 
-    login_form = forms.UserForm()
-    hashkey = CaptchaStore.generate_key()
-    image_url = captcha_image_url(hashkey)
-    return render(request, 'login/login.html', locals())
+        login_form = forms.UserForm()
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        return render(request, 'login/login.html', locals())
 
 #注册
 def register(request):
@@ -172,53 +183,107 @@ def register(request):
                     hashkey = CaptchaStore.generate_key()
                     image_url = captcha_image_url(hashkey)
                     return render(request, 'login/register.html', locals())
-                #一切都ok时
-                new_user = models.User()
-                new_user.name = username 
-                #使用加密密码
-                new_user.password = hash_code(password1)
-                new_user.email = email 
-                new_user.sex = sex 
-                new_user.pet_type = pet_type 
-                new_user.intro = intro 
-                #如果用户上传的头像
-                if request.FILES.get('photo', None):
-                    # 获取头像
-                    photo_obj = request.FILES['photo']
-                    #文件格式 正则
-                    import re
-                    l = re.split(r'\.',photo_obj.name)
-                    photo_type = l[-1]
-                    photo_name = new_user.name + '.' + photo_type
-                    #存储文件
-                    try:
-                        destination = open(os.path.join("/home/koro/mysite/media/photo",photo_name),"wb+")
-                        for chunk in photo_obj.chunks():
-                            destination.write(chunk)
-                        
-                    except Exception as e:
-                        print('存储文件失败:',e)
-                    finally:
-                        destination.close()
-                        photo_obj.close()
+                try:
+                    #一切都ok时
+                    new_user = models.User()
+                    new_user.name = username
+                    #使用加密密码
+                    new_user.password = hash_code(password1)
+                    new_user.email = email
+                    new_user.sex = sex
+                    new_user.pet_type = pet_type
+                    new_user.intro = intro
+                    #先保存除头像外的数据
+                    new_user.save()
+                except Exception as e:
+                    print('保存新用户数据失败:',e)
+                else:
+                    print('保存除头像外的新用户数据成功!')
 
-                    # 拼接路径
-                    photo = "photo/" + new_user.name + '.' + photo_type
-                    #保存图片路径到数据库
-                    new_user.photo = photo
-                new_user.save()
+                #查询新用户在数据库中id是多少
+                new_id = new_user.id
+
+                #保存默认头像 传入新用户id
+                save_default_photo(new_id,new_user)
 
                 #认证注册邮箱
                 code = make_confirm_string(new_user, 'ConfirmString')
-                send_email(email, code, 'register')
+                try:
+                    send_email(email, code, 'register')
+                except Exception as e:
+                    message = "邮件发送失败,请联网或换一个邮箱重新注册"
+                    print('注册拦截异常')
+                    #删除数据库中才保存的信息
+                    models.User.objects.filter(name=username).delete()
+                    #返回注册界面
+                    hashkey = CaptchaStore.generate_key()
+                    image_url = captcha_image_url(hashkey)
+
+                    return render(request, 'login/register.html', locals())
                 message = "请前往注册邮箱,进行邮箱认证~"
                 #跳转到等待邮件确认页面
                 return render(request, 'login/confirm.html', locals())
+        #如果验证不成功
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        return render(request, 'login/register.html', locals())
 
     register_form = forms.RegisterForm()
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
     return render(request, 'login/register.html', locals())
+
+#保存默认头像
+def save_default_photo(uid,new_user):
+    # 组合路径 以用户id新建文件夹 生成默认头像
+    new_path = os.path.join('media', str(uid), "avatar", 'default.jpg')
+    #数据库里的头像路径
+    new_path_mysql = os.path.join(str(uid), "avatar", 'default.jpg')
+
+    #拼出默认头像的绝对路径
+    #得到最外层mysite的绝对路径 /home/..../mysite
+    basedir = os.path.dirname(os.path.dirname(__file__))
+    #默认头像的绝对路径
+    default_path = os.path.join(basedir, 'media/photo/default.jpg')
+
+    #去掉用户头像文件名,返回目录avatar
+    directory = os.path.dirname(new_path)
+    #因为是新用户,所以直接创建用户文件夹
+    os.makedirs(directory)
+
+    try:
+        #打开默认头像的文件流
+        old_photo = open(default_path,"rb")
+        #打开新生成的头像
+        #拼出新生成的头像的绝对路径
+        new_photo_path = os.path.join(basedir, 'media', new_path_mysql)
+        new_photo = open(new_photo_path, 'wb+')
+        # 1024字节的读取
+        while True:
+            chunk = old_photo.read(1024)
+            if not chunk:
+                break
+            new_photo.write(chunk)
+    except Exception as e:
+        print('保存默认头像失败',e)
+    finally:
+        old_photo.close()
+        new_photo.close()
+    try:
+        #保存到数据库
+        new_user.photo = new_path_mysql
+        new_user.save()
+        print('保存默认头像成功!')
+    except Exception as e:
+        print('存储默认头像到数据库失败:',e)
+
+
+
+
+
+
+
+
 
 #创建确认码对象
 def make_confirm_string(user, string):
@@ -271,12 +336,12 @@ def send_email(email, code, string):
         <p>此链接有效期为{}天!</p>
         '''.format('127.0.0.1:8000', code, string, settings.RESET_DAYS)
     #试图发送邮件
-    try:
-        msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [email])
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-    except Exception as e:
-        print('邮件发送失败:',e)
+    # try:
+    msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    # except Exception as e:
+    #     print('邮件发送失败:',e)
 
 
 def logout(request):
@@ -322,28 +387,29 @@ def change_password(request):
             new_password1 = change_password_form.cleaned_data['new_password1']
             new_password2 = change_password_form.cleaned_data['new_password2']
 
-        if new_password1 != new_password2:
-            message = "两次输入的密码不同"
-            return render(request, 'login/change_password.html', locals())
-        elif hash_code(old_password) == hash_code(new_password1):
-            message = "新老密码不能相同"
-            return render(request, 'login/change_password.html', locals())
-        elif len(new_password1) < 6 or len(new_password1) > 12:
-            message = "密码长度在6-12个字符间"
-            return render(request, 'login/change_password.html', locals())
-        else:
-            try:
-                #哈希值和数据库值对比
-                if user.password == hash_code(old_password):
-                    #改变密码
-                    user.password = hash_code(new_password1)
-                    user.save()                
-                    return render(request, 'login/change_password_done.html', locals())
-                else:
-                    message = "原密码不正确哦"
-                    return render(request, 'login/change_password.html', locals())
-            except:
-                message = "请填入正确的原密码"
+            if new_password1 != new_password2:
+                message = "两次输入的密码不同"
+                return render(request, 'login/change_password.html', locals())
+            elif hash_code(old_password) == hash_code(new_password1):
+                message = "新老密码不能相同"
+                return render(request, 'login/change_password.html', locals())
+            elif len(new_password1) < 6 or len(new_password1) > 12:
+                message = "密码长度在6-12个字符间"
+                return render(request, 'login/change_password.html', locals())
+            else:
+                try:
+                    #哈希值和数据库值对比
+                    if user.password == hash_code(old_password):
+                        #改变密码
+                        user.password = hash_code(new_password1)
+                        user.save()
+                        return render(request, 'login/change_password_done.html', locals())
+                    else:
+                        message = "原密码不正确哦"
+                        return render(request, 'login/change_password.html', locals())
+                except:
+                    message = "请填入正确的原密码"
+
         return render(request, "login/change_password.html", locals())
 
     change_password_form = forms.ChangepasswordForm()
@@ -364,7 +430,7 @@ def user_confirm(request):
             confirm = models.ConfirmString.objects.get(code=code)
             c_time = confirm.c_time 
         except:
-            message = '您的邮件确认已被使用或无效,请重新申请邮件确认'
+            message = '您的注册邮件验证已被使用或无效,请重新申请邮件确认'
             return render(request, 'login/confirm.html', locals())
 
         #时间超时
@@ -380,7 +446,7 @@ def user_confirm(request):
             #从数据库中删除注册码
             confirm.delete()
             message = "感谢确认,请使用账户密码登录~"
-            return render(request, 'login/confirm.html', locals())   
+            return render(request, 'login/confirm.html', locals())
 
     elif type == "reset":
         try:
@@ -439,6 +505,10 @@ def reset_password(request):
                 hashkey = CaptchaStore.generate_key()
                 image_url = captcha_image_url(hashkey)
                 return render(request, 'login/reset_password_done.html', locals())
+        #form表单自带验证不成功
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        return render(request, 'login/reset_password.html', locals())
 
     reset_password_form = forms.ResetpasswordForm()
     hashkey = CaptchaStore.generate_key()
@@ -491,6 +561,7 @@ def reset_password_ready(request):
                     message = "修改密码失败,请联系管理员"
                     print(e)
                     return render(request, 'login/reset_password_ready.html', locals())
+        #form验证不成功
         return render(request, "login/reset_password_ready.html", locals())
 
     reset_password_ready_form = forms.ResetpasswordreadyForm()
@@ -724,8 +795,84 @@ def crop_image(current_avatar , file, data, uid):
 
     # 如果改变前数据库的头像路径不是默认头像，删除老头像图片, 节省空间
     if not current_avatar == os.path.join("avatar", "default.jpg"):
-        #os.path.basename()返回文件名
+        #os.path.basename()返回文件名 根据数据库中存的图片途径 删除原头像
         current_avatar_path = os.path.join("media", str(uid), "avatar", os.path.basename(current_avatar.url))
         os.remove(current_avatar_path)
     #返回目前图片以用户id文件夹开始的路径
     return cropped_avatar
+
+
+#重新发送注册邮件
+def send_again_register(request):
+    #只有在用户没登陆时才有重新发送注册邮件按钮
+    if request.method == "POST":
+        #加载重新发送邮件的表
+        send_again_form = forms.SendAgainForm(request.POST)
+        message = "所有字段都必须填写正确哦~"
+        # 在form表中获取数据
+        if send_again_form.is_valid():
+            email = send_again_form.cleaned_data['email']
+            password = send_again_form.cleaned_data['password']
+            try:
+                # 判断邮箱在不在数据库中
+                same_email_user = models.User.objects.filter(email=email)
+            except:
+                message = "获取不到用户的邮箱"
+            # 如果邮箱不存在
+            if not same_email_user:
+                message = "此邮箱未被注册"
+                # hashkey = CaptchaStore.generate_key()
+                # image_url = captcha_image_url(hashkey)
+                # return render(request, 'login/send_again_register.html', locals())
+            # 邮箱存在
+            else:
+                # 获取用户对象
+                user = models.User.objects.get(email=email)
+                #获取用户id
+                user_id = user.id
+                #如果用户输入的密码和数据库中密码一致
+                if user.password == hash_code(password):
+                    try:
+                        #找到确认码数据表中用户对应的对象
+                        confirm = models.ConfirmString.objects.get(user=user_id)
+                        # 如果确认码存在
+                        if confirm:
+                            # 从数据库中删除注册码
+                            confirm.delete()
+                    #如果没有
+                    except Exception as e:
+                        print('查询确认码失败:', e)
+
+                    #创建新的注册确认码
+                    code = make_confirm_string(user, 'ConfirmString')
+                    try:
+                        send_email(email, code, 'register')
+                    except Exception as e:
+                        message = "邮件发送失败,请联网或换一个邮箱重新注册"
+                        print('重新发送注册验证邮件拦截异常')
+                        # 删除数据库中对应的用户
+                        models.User.objects.filter(name=username).delete()
+                        # 返回注册界面
+                        hashkey = CaptchaStore.generate_key()
+                        image_url = captcha_image_url(hashkey)
+                        return render(request, 'login/register.html', locals())
+                    #成功发送邮件后
+                    message = "请前往注册邮箱,进行邮箱认证~"
+                    # 跳转到等待邮件确认页面
+                    return render(request, 'login/confirm.html', locals())
+                #如果用户输入的密码错误
+                else:
+                    message = "密码错误,重新发送邮件失败"
+            #如果密码错误或者邮箱不存在
+            hashkey = CaptchaStore.generate_key()
+            image_url = captcha_image_url(hashkey)
+            return render(request, 'login/send_again_register.html', locals())
+        #如果form验证失败
+        hashkey = CaptchaStore.generate_key()
+        image_url = captcha_image_url(hashkey)
+        return render(request, 'login/send_again_register.html', locals())
+    #如果是get请求
+    send_again_form = forms.SendAgainForm()
+    hashkey = CaptchaStore.generate_key()
+    image_url = captcha_image_url(hashkey)
+    return render(request, 'login/send_again_register.html', locals())

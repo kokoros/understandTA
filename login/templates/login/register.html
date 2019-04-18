@@ -11,10 +11,11 @@
 			<div class="lowin-box lowin-login">
 				<div class="lowin-box-inner">
 					<form action="/register/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
                         {% if message %}
                             <div class="alert alert-warning">{{ message }}</div>
                         {% endif %}
-                        {% csrf_token %}
+
 
                         <p>欢迎新用户注册</p>
 
@@ -71,6 +72,11 @@
 
                             <div class="lowin-group">
                                 <p>上传头像:</p>
+
+
+
+
+
                                 <input type="file" name="photo">
                             </div>
 

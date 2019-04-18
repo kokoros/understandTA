@@ -59,6 +59,10 @@ urlpatterns = [
     #试验处理裁剪提交
     path('handing_head/', views.handing_head),
 
+    #试验重新发送邮件
+    path('send_again_register/', views.send_again_register),
+
+
 
     #导入polls中的路由
     path(r'pet', polls_views.pets),

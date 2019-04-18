@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
+{% block title %}重新发送注册验证邮件{% endblock %}
+
+
+{% block content %}
+    <div class="lowin lowin-red" style="height:700px;background:url({% static 'login/mycat.jpg' %});">
+        <div class="lowin-wrapper">
+            <div class="lowin-box lowin-login">
+                <div class="lowin-box-inner">
+                    <form action="/send_again_register/" method="post">
+                        {% if message %}
+                            <div class="alert alert-warning">{{ message }}</div>
+                        {% endif %}
+
+                        {% csrf_token %}
+
+                        <p>重新发送注册验证邮件</p>
+
+                        <div class="lowin-group">
+                            <label>{{ send_again_form.email.label_tag }}</label>
+                            {{ send_again_form.email }}
+                        </div>
+
+                        <div class="lowin-group">
+                            <label>{{ send_again_form.password.label_tag }}</label>
+                            {{ send_again_form.password }}
+                        </div>
+
+
+
+                        <div class="lowin-group">
+                            {{ reset_password_form.captcha.errors }}
+                            <label>验证码:</label>
+                            <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                            <span class="v5-yzm fr">
+                                <a href="#" class="next-captcha">
+                                    <img src="{{ image_url }}" class="captcha" alt="captcha">
+                                    换一张
+                                </a>
+                            </span>
+                            <input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+                        </div>
+
+                        <script>
+                              {# 刷新验证码#}
+                              $(".next-captcha").click(function(){
+                                  $.getJSON("/captcha/refresh", function(data) {
+                                      $(".captcha").attr('src',data.image_url);
+                                      $("#id_reg_captcha_0").attr('value',data.key);
+                                  })
+                              })
+                        </script>
+
+                        <button type="submit" class="lowin-btn login-btn">
+							重新发送注册邮箱邮件
+						</button>
+                    </form>
+                </div>
+			</div>
+        </div>
+    </div>
+
+{% endblock %}
