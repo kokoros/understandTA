@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}订单{% endblock %}
+
+{% block css %}
+
+<style>
+    #allcontent a{
+        color: rgb(153, 79, 79);
+    }
+    #allcontent a:hover{
+        color: rgb(255, 0, 0);
+    }
+    #allcontent{
+        margin: 3% 10%;
+        text-align: center;
+        color: rgb(153, 79, 79);
+    }
+    .center_table{
+        color: rgb(153, 79, 79) !important;
+        margin-top: 10px;
+        height: 36px;
+        border-top: 1px solid #e4b5b5;
+        box-shadow: 0 2px 5px #e4b8b8;
+        background: #f3ebeb;
+        color: #808080;
+        text-align: center;
+        line-height: 36px;
+    }
+    #form_omg{
+        text-align: left;
+        margin-left: 5%;
+    }
+
+       .im{
+               width: 150px;
+               height: 150px;
+               float: left;
+
+       }
+       .ser{
+            background-color: rgb(255, 246, 246);
+            height: 50px;
+            border: none;
+            border-radius: 3px;
+            padding: 15px 20px;
+            width: 60%;
+            outline: 0;
+        }
+       #btn{
+            margin-left: 20%;
+            background: #905555;
+            color: white;
+       }
+       p{
+               font-size: 20px;
+       }
+
+       </style>
+
+<script>
+function check(){ 
+     var phone=omy.phone.value;
+     var address=omy.address.value;
+     if(address.length<1){
+             alert('请输入正常地址');
+             return false;
+     }
+//      console.log(phone)
+//     var phone = document.getElementById('phone').value; ???执行获取不到对象　　　　　　　　　　
+    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+        alert("手机号码有误，请重填");  
+       return false; 
+    } 
+    var btn=document.getElementById('btn');
+    btn.disabled='';
+//     alert('gggg')
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+　<h2>确认订单</h2>
+<br/><br/>
+ <table width='100%' cellspacing='20px' >
+         <tr  align='center' class="center_table" >
+                 <td>图片</td>
+                 <td> 描述</td>
+                 <td>单价</td>
+                 <td>数量</td>
+                 <td>金额</td>
+         </tr>
+         {% if posts%}
+         {% for pr in posts %} 
+         <tr>  
+         <td> <img class="im" src="{% static pr.cpath %}"></td>
+         <td> {{pr.cname}}</td>
+         <td>{{pr.cprice}} </td>
+         <td>{{pr.cnumber}} </td>
+         <td> {{pr.callprice}}</td>
+         </tr>
+         {% endfor %}
+{% endif %}
+ </table>
+    <br/>
+ <form action="/orderput" method="GET" name='omy' id="form_omg">
+    <p>收货地址：<input  class='ser' type="text"  name='address'><input type="hidden" name="oid" value="{{ request.GET.urlencode }}" > </p>
+    <p>手机号码：<input  class='ser'  type="tel" placeholder="请输入11位的手机号" name='phone'　id='phone' onblur="check()"> <a id='msg'>必填项</a></p>
+    <p>收货人员：<input class='ser' type="text" name='uname' ></p>
+     <p>买家留言：<input class='ser' type="text" name='desc'></p>
+     <!-- <p>支付密码：<input type='password' name='pwd'></p> -->
+     <!-- <p><input   disabled="disabled" type="submit" value="提交订单" id='btn' ></p> -->
+     <p><input class='ser' disabled="disabled" type="submit" value="提交订单" id='btn' ></p>
+ </form>
+</div>
+{% endblock %}

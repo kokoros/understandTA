@@ -54,18 +54,43 @@ urlpatterns = [
     #关于我们
     path('aboutus/', views.aboutus),
 
-    # 试验裁剪并上传头像
+    # 裁剪并上传头像
     path('head_photo/', views.head_photo),
-    #试验处理裁剪提交
+    #处理裁剪提交
     path('handing_head/', views.handing_head),
 
-    #试验重新发送邮件
+    #重新发送邮件
     path('send_again_register/', views.send_again_register),
 
+    #Ajax验证验证码
+    path('ajax_captcha/', views.ajax_captcha),
 
+    #验证邮箱在不在数据库
+    path('ajax_user_email_isalive/', views.ajax_user_email_isalive),
+    #验证用户名在不在数据库
+    path('ajax_user_name_isalive/', views.ajax_user_name_isalive),
 
     #导入polls中的路由
     path(r'pet', polls_views.pets),
+    path(r'query', polls_views.showbyname),
+    path(r'collect', polls_views.collect),
+    path(r'good', polls_views.goodbyname),
+    path(r'orders', polls_views.getgood),
+    path(r'showorder', polls_views.orderlist),
+    path(r'orderput', polls_views.orderput),
+    path(r'goodadd', polls_views.goodadd),
+    path(r'orderquery', polls_views.orderquery),
+    path(r'delorder', polls_views.orderdelete),
+    path(r'pay', polls_views.orderpay),
+    path(r'orderpay', polls_views.payresult),
+    path(r'petdetail', polls_views.petdetail),
+    path(r'deorders', polls_views.deorders),
+    path(r'degoodadd', polls_views.degoodadd),
+    path(r'delorderput', polls_views.orderputde),
+    path(r'colles', polls_views.colles),
+    path(r'coladd', polls_views.coladd),
+    path(r'coldel', polls_views.coldel),
+
 
 ]
 

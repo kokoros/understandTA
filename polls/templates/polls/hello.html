@@ -1,0 +1,104 @@
+
+
+<!DOCTYPE html>
+<html>
+<head lang='en'>
+<meta charset="utf-8">
+<title>ProductIfo</title>
+<meta charset="utf-8">
+<style>
+        #body{
+                background-color:#89BDCA;
+        }
+        #content{
+       margin: 0 auto;
+       height: 650px;
+       position: relative;
+       }
+       .forcont{
+           width: 300px;
+           height: 330px;  
+           float: left; 
+           background-image: url('/static/images/h.jpg ');
+       }
+       #imgp{
+               width: 200px;
+               height: 200px;
+       }
+       p{
+               margin:1px 0px;
+       }
+       .con{
+               width: 200px;
+       }
+
+       #form{
+               margin: 0 auto;
+               width: 80%;
+               height: 40px;
+       }
+       .ser{
+        background-color:#89BDCA;
+        }
+       ＃foot{
+               margin: 0 auto;
+               height: 30px;
+               position:absolute;
+               align-content: center;
+       }
+       #fenye {
+               align-content: center;
+               display: inline;
+               text-align: center;
+               display: block;
+       }
+       #aname{
+               text-decoration: none;
+       }
+       ＃msg{
+         color:red;
+       }
+       </style>
+</head>
+<body id='body'>
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+<div id='forms'>
+<form align='center'  id='form' action="/orderpay" method="POST">
+{% csrf_token %}
+<input class="ser" type='password' name="paw">
+<input class="ser" type='hidden' name="olid" value="{{ request.GET.urlencode }}" >
+<input class="ser" type="submit" value="确认支付">
+</form>
+</div>
+<p>
+<input type="tel" id='phone'><a id='msg'>手机号必须填写</a>
+</p>
+<button onclick="checkPhone()">测试</button>
+<script>
+
+function checkPhone(){ 
+    var phone = document.getElementById('phone').value;
+    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+        alert("手机号码有误，请重填");  
+        return false; 
+    } 
+}
+
+function che()
+{
+var pd='';
+var rpd='123';
+pd=prompt('result','password')
+if(pd!=rpd){
+    alert('ooo')
+}else{
+    alert('OK')
+}
+
+}
+</script>
+</div>
+</body>
+</html>

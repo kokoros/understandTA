@@ -29,7 +29,7 @@
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav">
 									<li><a class="active" href="/">首页</a></li>
-									<li><a href="about.html">商品</a></li>
+									<li><a href="/pet">商品</a></li>
 									<li class="">
                                         <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             公告区
@@ -43,9 +43,8 @@
 									<li><a href="gallery.html">明星宠物墙</a></li>
 									<li><a href="#week_news">每周科普</a></li>
 									<li><a href="/aboutus/">关于我们</a></li>
-                                    <li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
 
-                                    </li>
 								</ul>
 								<div class="clearfix"> </div>
 							</div>
@@ -53,13 +52,38 @@
 					</div>
 					<div class="agileinfo-social-grids">
 						<ul>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+
 
 
                             {% if request.session.is_login %}
+                            <li class="new_login_about">
+                                <a href="/orderput">
+                                    <img src="{% static 'login/order.png' %}" class="cart_and_order" title="我的订单"/>
+                                </a>
+                            </li>
+                            <li class="new_login_about">
+                                <a href="/collect">
+                                    <img src="{% static 'login/shop_car.png' %}" class="cart_and_order" title="购物车"/>
+                                </a>
+                            </li>
+{# 自己写css#}
+                            <style>
+                                .cart_and_order{
+                                    padding-bottom: 5px;
+                                    margin-right: 10px;
+                                    filter: grayscale(100%);
+                                    opacity: 0.6;
+                                    -webkit-transition-timing-function: ease;
+                                    -webkit-transition-duration: 0.3s;
+                                }
+                                .cart_and_order:hover{
+                                    filter: none;
+                                    opacity: 0.8;
+                                }
+                            </style>
                             <li class="new_login_about"><a href="/information/">当前在线:{{ request.session.user_name }}</a></li>
                             <li class="new_login_about"><a href="/change_password/">修改密码</a></li>
-                            <li class="new_login_about"><a href="/modify/">修改个人信息</a></li>
+
 
                             <li class="new_login_about"><a href="/logout/">登出</a></li>
                             {% else %}
@@ -103,7 +127,7 @@
 								<div class="agileits-banner-info">
 									<h3>我们的终身伴侣<br/>终身 陪伴<span>精心 呵护</span></h3>
 									<div class="w3-button">
-										<a href="single.html">更多</a>
+										<a href="/pet">更多</a>
 									</div>
 								</div>
 							</li>
@@ -111,7 +135,7 @@
 								<div class="agileits-banner-info">
 									<h3>为了守护<br/>主子的笑容<span>为了最珍贵的你</span></h3>
 									<div class="w3-button">
-										<a href="single.html">更多</a>
+										<a href="/pet">更多</a>
 									</div>
 								</div>
 							</li>
@@ -260,38 +284,23 @@
                 <div id="portfolio-slider" class="portfolio-slider owl-carousel owl-theme" style="opacity: 1; display: block;">
                     <div class="owl-wrapper-outer">
                         <div class="owl-wrapper" style="width: 5760px; left: 0px; display: block; transition: all 1000ms ease 0s; transform: translate3d(0px, 0px, 0px);">
+
+                        {% for pet in pets %}
                             <div class="owl-item" style="width: 360px;height:400px;">
                                 <div class="item">
                                     <div class="item-image">
-                                        <a href="">
-                                            <img style="width: 300px;" src="{% static 'two_temp/images/portfolio/1.jpeg' %}" alt="Portfolio Image">
-                                        </a>
+                                            <a href='petdetail?detailid={{pet.id}}' >
+                                                <img style="width: 300px;" src="{% static pet.ppath %}" alt="Portfolio Image">
+                                            </a>
                                     </div>
-                                    <span class="item-title">精选猫罐头.兽人永不为奴!除非包吃包住</span>
+                                    <span class="item-title">
+                                        {{pet.pname | truncatechars:20 }}
+                                    </span>
+
                                 </div>
                             </div>
+                        {% endfor %}
 
-                            <div class="owl-item" style="width:360px;height:400px;">
-                                 <div class="item">
-                                    <div class="item-image">
-                                        <a href="">
-                                            <img style="width: 300px;height:300px;" src="{% static 'two_temp/images/portfolio/2.jpeg' %}" alt="Portfolio Image">
-                                        </a>
-                                    </div>
-                                    <span class="item-title">精选狗玩具.让主子放心撕咬</span>
-                                 </div>
-                            </div>
-
-                                                        <div class="owl-item" style="width: 360px;height:400px;">
-                                <div class="item">
-                                    <div class="item-image">
-                                        <a href="">
-                                            <img style="width: 300px;" src="{% static 'two_temp/images/portfolio/1.jpeg' %}" alt="Portfolio Image">
-                                        </a>
-                                    </div>
-                                    <span class="item-title">精选猫罐头.兽人永不为奴!除非包吃包住</span>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -300,15 +309,6 @@
             </div><!-- /.portfolio-area -->
         </div><!-- /.container -->
     </section>
-
-
-
-
-
-
-
-
-
 
 
 	<!-- services -->

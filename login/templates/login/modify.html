@@ -21,12 +21,48 @@
             margin-right: 50px;
     }
     </style>
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <script>
+        $(function(){
+            //判断用户名是否在数据库中存在
+            $("#user_name").blur(function(){
+                //用get拼传参
+                var params = "user_name=" + $("#user_name").val();
+                $.get("/ajax_user_name_isalive", params, function(data){
+                    //如果用户名存在
+                    if(data.ajax_name == '1'){
+                        $("#user_name_alive").html('此用户名已被注册,请换一个尝试')
+                    }else{
+                        $("#user_name_alive").html('')
+                    }
+                })
+            });
+
+            //判断验证码是否正确 把验证码传到后端
+            $("#id_reg_captcha_1").keyup(function () {
+
+                //用get方法拼 传参
+                var params = "captcha_1=" + $('#id_reg_captcha_1').val() + '&captcha_0=' + $('#id_reg_captcha_0').val();
+                $.get("/ajax_captcha", params, function (data) {
+                    //object类型 所以直接点语法取值
+                    //如果为1
+                    if (data.ajax_captcha == '1') {
+                        $("#captcha_isalive").html('')
+                    } else {
+                        $("#captcha_isalive").html('验证码错误')
+                    }
+                }, "json");
+            });
+
+
+        })
+    </script>
 {% endblock %}
 
 {% block content %}
     <div class="lowin lowin-red" style="height:800px;background:url({% static 'login/mycat2.jpg' %})">
 		<div class="lowin-brand">
-            <a href="/head_photo">
+            <a href="/head_photo" target="_blank">
 			    <img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
             </a>
 		</div>
@@ -50,6 +86,7 @@
                                  <div class="lowin-group">
                                     <label>{{ modify_form.username.label_tag }}</label>
                                     {{ modify_form.username }}
+                                     <span id="user_name_alive" style="color:rgb(255, 0, 0);"></span>
                                 </div>
                                 <div class="lowin-group">
                                     <label>{{ modify_form.sex.label_tag }}</label>
@@ -72,12 +109,12 @@
                                     {{ modify_form.intro }}
                                 </div>
                                 <br/>
+
                                 <div class="lowin-group" id="showTemp">
-                                    <p style="text-align: left;">上传新头像:</p>
-                                    <input type="file" name="new_photo">
+                                    <p style="text-align: left;">裁剪后上传新头像:</p>
 {#                                    裁剪头像的超链接#}
-                                    <a href="/head_photo">
-                                        图片原始尺寸不满意?点我或者点头像~享受在线裁剪的快感
+                                    <a href="/head_photo" target="_blank" class="lowin-btn login-btn" style="margin-left:30%;width:50%;text-decoration: none;text-align: center;">
+                                        上传头像
                                     </a>
                                 </div>
 
@@ -86,6 +123,7 @@
                                     {{ modify_form.captcha.errors }}
                                     <label>验证码:</label>
                                     <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                                    <span id="captcha_isalive" style="color:rgb(255, 0, 0);"></span>
                                     <span class="v5-yzm fr">
                                         <a href="#" class="next-captcha">
                                             <img src="{{ image_url }}" class="captcha" alt="captcha">

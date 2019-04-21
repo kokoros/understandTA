@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}裁剪并上传头像{% endblock %}
 
-
 {% block content %}
-<div id="maxlarge" style="overflow:hidden;">
+    <div style="height:400px;background:url({% static 'login/mycat2.jpg' %})">
+
+<div id="maxlarge" style="overflow:hidden;color: rgb(255, 196, 172);">
 
 <div class="ibox-content">
-	<div class="row">
-		<div id="crop-avatar" class="col-md-6">
+	<div class="row" style="text-align:center;">
+        <h2>更换头像 自动保存 满意后直接关闭页面就好了哦</h2>
+        <br/>
+		<div id="crop-avatar" class="col-md-6" style="left: 41%;width: 220px;">
+
 			<div class="avatar-view" title="点击更换图片">
 				<img src="{{ MEDIA_URL }}{{ photo }}" alt="Logo">
 			</div>
@@ -21,7 +25,7 @@
 			<form class="avatar-form" action="/handing_head/" enctype="multipart/form-data" method="post">
 				<div class="modal-header">
 					<button class="close" data-dismiss="modal" type="button">&times;</button>
-					<h4 class="modal-title" id="avatar-modal-label">Change Logo Picture</h4>
+					<h4 class="modal-title" id="avatar-modal-label">裁剪后上传图片</h4>
 				</div>
 				<div class="modal-body">
 					<div class="avatar-body">
@@ -50,7 +54,7 @@
 								</div>
 							</div>
 							<div class="col-md-3">
-								<button class="btn btn-success btn-block avatar-save" type="submit"><i class="fa fa-save"></i> 保存修改</button>
+								<button class="btn btn-success btn-block avatar-save" type="submit" style="background-color: rgb(255, 196, 172);border-color: rgb(255, 196, 172);"><i class="fa fa-save"></i> 保存修改</button>
 							</div>
 						</div>
 					</div>
@@ -64,9 +68,17 @@
 
 </div>
 
+
+    </div>
+
 {% endblock %}
 
 {% block csslast %}
+    <style>
+        .btn-success:hover{
+            background-color: rgb(132, 101, 88) !important;
+        }
+    </style>
 
     <script src="{% static 'head_photo/jquery.min.js' %}"></script>
 {#	<link href="{% static 'head_photo/bootstrap/css/bootstrap-theme.min.css' %}" rel="stylesheet">#}

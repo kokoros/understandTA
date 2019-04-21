@@ -25,8 +25,22 @@ class User(models.Model):
     reset_password = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name 
-    #魔法方法,让上面的代码能被Django识别
+        return self.name
+
+    # 创建一个方法,负责将本类中的属性们转换成字典 方便ajax调用
+    def to_dict(self):
+        dic = {
+            'id': self.id,
+            'name': self.name,
+            'password': self.password,
+            'email': self.email,
+            'petname': self.petname,
+            'pet_type': self.pet_type,
+            'intro': self.intro
+        }
+        return dic
+
+    #魔法方法
     class Meta:
         #按时间倒着排序
         ordering = ["-c_time"]

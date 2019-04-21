@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}订单{% endblock %}
+
+{% block css %}
+
+<style>
+       .im{
+               width: 150px;
+               height: 150px;
+               float: left;
+
+       }
+
+       .ser{
+        background-color:#89BDCA;
+        }
+       p{
+               font-size: 20px;
+       }
+
+
+
+
+    a{
+        text-decoration: none !important;
+        color: rgb(153, 79, 79);
+    }
+    #allcontent{
+        margin: 3% 10%;
+        text-align: center;
+        color: rgb(153, 79, 79);
+    }
+    #allcontent a{
+        color: rgb(153, 79, 79);
+    }
+    #allcontent a:hover{
+        color: rgb(255, 0, 0);
+    }
+
+    .center_table{
+        color: rgb(153, 79, 79) !important;
+        margin-top: 10px;
+        height: 36px;
+        border-top: 1px solid #e4b5b5;
+        box-shadow: 0 2px 5px #e4b8b8;
+        background: #f3ebeb;
+        color: #808080;
+        text-align: center;
+        line-height: 36px;
+    }
+
+       .ser{
+            background-color: rgba(206, 176, 176, 0.3);
+            margin: 10px auto;
+            border: 1px solid whitesmoke;
+            height: 40px;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+       .im{
+               width: 150px;
+               height: 150px;
+               float: left;
+
+       }
+
+       p{
+               font-size: 20px;
+       }
+        .decrement {
+            float: left;
+            width: 26px;
+            height: 26px;
+            border: 1px solid #8080804d;
+            background: rgba(255, 172, 172, 0.27);
+            margin-top: 40px;
+            color: #333;
+            text-align: center;
+            line-height: 26px;
+            margin:0;
+            line-height: 23px;
+        }
+        .count{
+            width: 140px;
+            margin-left: 70px;
+        }
+
+
+       </style>
+
+{% endblock %}
+
+{% block content %}
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+<div id='forms'>
+<form   id='form' action="/orderquery" method="GET">
+<input class="ser" type='text' name="ordername" placeholder="请输入您要搜索的内容">
+<input class="ser" type="submit" value="查询" >
+</form>
+</div>
+ <table width='100%' cellspacing='20px' >
+         <tr  align='center' class="center_table" >
+                 <td>图片</td>
+                 <td>描述</td>
+                 <td>数量</td>
+                 <td>金额</td>
+                 <td>状态</td>
+                 <td>收货地址</td>
+                 <td>收货人员</td>
+                 <td>手机号</td>
+                 <td>操作</td>
+         </tr>
+         {% if posts%}
+         {% for pr in posts %} 
+         <tr>  
+         <td> <img class="im" src='{% static pr.opath %}'></td>
+         <td> {{pr.oname}}</td>
+         <td>{{pr.onum}} </td>
+         <td> {{pr.oprice}}</td>
+
+         <!-- <td>{{pr.ostatue}} </td> -->
+         <td>{{pr.odesc}}</td>
+         
+         <td>{{pr.oaddress}}</td>
+         <td>{{pr.ouser}}</td>
+         <td>{{pr.ophone}}</td>
+         <td><a href='delorder?odid={{pr.id}}' >删除</a> <a href='pay?opid={{pr.id }}' 支付</a> </td>
+         </tr>
+         {% endfor %}
+{% endif %}
+ </table>
+
+{#<!-- 分页控制 -->#}
+{# <!-- <div　id='foot'>　#}
+{#<span id='fenye'>#}
+{#        {% if posts.has_previous %}#}
+{#        <a href="?page={{ posts.previous_page_number }}">上一页</a>#}
+{#        {% endif %}#}
+{#        <span>#}
+{#                当前页{{posts.number }} 总共 {{posts.paginator.num_pages}}        #}
+{#        </span>#}
+{#        {% if posts.has_next %}#}
+{#        <a href="?page={{ posts.next_page_number }}">下一页</a>#}
+{#        {% endif %}#}
+{#</span>#}
+{#</div>  -->#}
+</div>
+{% endblock %}

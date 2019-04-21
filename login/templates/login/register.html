@@ -1,6 +1,84 @@
 {% extends 'base.html' %}
 {% block title %}注册{% endblock %}
-{% block css %}<link href="{% static 'login/auth.css' %}" rel="stylesheet"/>{% endblock %}
+{% block css %}
+    <link href="{% static 'login/auth.css' %}" rel="stylesheet"/>
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+{#    jq的脚本#}
+    <script>
+    //加载完毕后显示
+        $(function() {
+            //判断密码长度是否过短 且两个密码是否一致
+            $("#password1").keyup(function () {
+                password1 = $("#password1").val();
+                console.log(password1);
+                //如果任何一个密码长度小于6
+                if (password1.length < 6) {
+                    $("#password_first").html('密码长度应大于等于6位');
+                } else if (password1.length > 12) {
+                    $("#password_first").html('密码长度应小于12位');
+                } else {
+                    $("#password_first").html('');
+                }
+            });
+
+
+            $("#password2").keyup(function () {
+                password2 = $("#password2").val();
+                //如果密码相等
+                if (password1 == password2) {
+                    $("#password_last").html('');
+                } else {
+                    $("#password_last").html('两次输入的密码不同');
+                }
+            });
+
+            //判断邮箱是否在数据库中存在
+            $("#user_email").blur(function(){
+                //用get拼传参
+                var params = "user_email=" + $("#user_email").val();
+                $.get("/ajax_user_email_isalive", params, function(data){
+                    //如果邮箱存在
+                    if(data.ajax_email == '1'){
+                        $("#user_email_alive").html('此邮箱已注册,请直接登录')
+                    }else{
+                        $("#user_email_alive").html('')
+                    }
+                })
+            });
+
+            //判断用户名是否在数据库中存在
+            $("#user_name").blur(function(){
+                //用get拼传参
+                var params = "user_name=" + $("#user_name").val();
+                $.get("/ajax_user_name_isalive", params, function(data){
+                    //如果用户名存在
+                    if(data.ajax_name == '1'){
+                        $("#user_name_alive").html('此用户名已被注册,请换一个尝试')
+                    }else{
+                        $("#user_name_alive").html('')
+                    }
+                })
+            });
+
+            //判断验证码是否正确 把验证码传到后端
+            $("#id_reg_captcha_1").keyup(function () {
+
+                //用get方法拼 传参
+                var params = "captcha_1=" + $('#id_reg_captcha_1').val() + '&captcha_0=' + $('#id_reg_captcha_0').val();
+                $.get("/ajax_captcha", params, function (data) {
+                    //object类型 所以直接点语法取值
+                    //如果为1
+                    if (data.ajax_captcha == '1') {
+                        $("#captcha_isalive").html('')
+                    } else {
+                        $("#captcha_isalive").html('验证码错误')
+                    }
+                }, "json");
+            });
+        });
+
+    </script>
+{% endblock %}
 {% block content %}
 
 	<div class="lowin lowin-red" style="height:1500px;background:url({% static 'login/mycat.jpg' %});">
@@ -22,21 +100,26 @@
 						<div class="lowin-group">
 							<label>{{ register_form.username.label_tag }}</label>
                             {{ register_form.username }}
+                            <span id="user_name_alive" style="color:rgb(255, 0, 0);"></span>
 						</div>
 
 						<div class="lowin-group password-group">
 							<label>{{ register_form.password1.label_tag }}</label>
                             {{ register_form.password1 }}
+                            {#jq验证#}
+                            <span id="password_first" style="color:rgb(255, 0, 0);"></span>
 						</div>
 
   						<div class="lowin-group">
 							<label>{{ register_form.password2.label_tag }}</label>
                             {{ register_form.password2 }}
+                            <span id="password_last" style="color:rgb(255, 0, 0);"></span>
 						</div>
 
   						<div class="lowin-group">
 							<label>{{ register_form.email.label_tag }}</label>
                             {{ register_form.email }}
+                            <span id="user_email_alive" style="color:rgb(255, 0, 0);"></span>
 						</div>
 
 {#css部分#}
@@ -70,16 +153,6 @@
                                 {{ register_form.intro }}
                             </div>
 
-                            <div class="lowin-group">
-                                <p>上传头像:</p>
-
-
-
-
-
-                                <input type="file" name="photo">
-                            </div>
-
                         </div>
 
 {#js部分#}
@@ -99,6 +172,7 @@
                             {{ register_form.captcha.errors }}
                             <label>验证码:</label>
                             <input type="text" id="id_reg_captcha_1" name="captcha_1" class="lowin-input" placeholder="请输入验证码">
+                            <span id="captcha_isalive" style="color:rgb(255, 0, 0);"></span>
                             <span class="v5-yzm fr">
                                 <a href="#" class="next-captcha">
                                     <img src="{{ image_url }}" class="captcha" alt="captcha">

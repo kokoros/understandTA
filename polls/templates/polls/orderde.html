@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang='en'>
+<meta charset="utf-8">
+<title>订单</title>
+<meta charset="utf-8">
+<style>
+        #body{
+                background-color:#89BDCA;
+        }
+#allcontent{
+        width: 75%;
+        margin: 0 auto;
+        background-color:#89BDCA;
+}
+       .cont{
+        height: 150px;
+        background-color:#89BDCA;
+       }
+       .im{
+               width: 150px;
+               height: 150px;
+               float: left;
+
+       }
+       .imm{
+               float: left;
+               height: 150px;
+       }
+       .cc{
+               float: right;
+       }
+       .ser{
+        background-color:#89BDCA;
+        }
+       .sa{
+               font-size: 20px;
+               font-style: inherit;
+       }
+       p{
+               font-size: 20px;
+       }
+       .a{
+               text-decoration: none;
+       }
+       .td{
+               width: 50px;
+               height: 50px;
+       }
+       </style>
+</head>
+<script>
+function check(){ 
+     var phone=omy.phone.value;
+     var address=omy.address.value;
+     if(address.length<1){
+             alert('请输入正常地址');
+             return false;
+     }
+//      console.log(phone)
+//     var phone = document.getElementById('phone').value; ???执行获取不到对象　　　　　　　　　　
+    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+        alert("手机号码有误，请重填");  
+       return false; 
+    } 
+    var btn=document.getElementById('btn');
+    btn.disabled='';
+//     alert('gggg')
+}
+</script>
+<body id='body'>
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+　<h5>确认订单</h5>
+ <table width='100%' cellspacing='20px' >
+         <tr  align='center'  >
+                 <th>图片</th>
+                 <th> 描述</th>
+                 <th>单价</th>
+                 <th>数量</th>
+                 <th>金额</th>
+         </tr>
+         {% if posts%}
+         {% for pr in posts %} 
+         <tr>  
+         <td> <img class="im" src='{% static pr.ppath %}'></td>
+         <td> {{pr.pname}}</td>
+         <td>{{pr.pprice}} </td>
+         <td>1 </td>
+         <td> {{pr.pprice}}</td>
+         </tr>
+         {% endfor %}
+{% endif %}
+ </table>
+ <form action="/delorderput" method="GET" name='omy'>
+    <p>收货地址：<input  class='ser' type="text"  name='address'><input type="hidden" name="oid" value="{{ request.GET.urlencode }}" > </p>
+    <p>手机号码：<input  class='ser'  type="tel" placeholder="请输入11位的手机号" name='phone'　id='phone' onblur="check()"> <a id='msg'>必填项</a></p>
+    <p>收货人员：<input class='ser' type="text" name='uname' ></p>
+     <p>买家留言：<input class='ser' type="text" name='desc'></p>
+     <!-- <p>支付密码：<input type='password' name='pwd'></p> -->
+     <!-- <p><input   disabled="disabled" type="submit" value="提交订单" id='btn' ></p> -->
+     <p><input class='ser' disabled="disabled" type="submit" value="提交订单" id='btn' ></p>
+ </form>
+</div>
+</body>
+</html>

@@ -1,4 +1,3 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
@@ -17,139 +16,229 @@
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-            <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->    
+
         {% block css %}{% endblock %}
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- bootstrap-css -->
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
-<!--// bootstrap-css -->
-<!-- css -->
-<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
-<!--// css -->
-<!-- font-awesome icons -->
-<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
-<!-- //font-awesome icons -->
 
-<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+        <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <!-- bootstrap-css -->
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <!--// bootstrap-css -->
+        <!-- css -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+        <!--// css -->
+        <!-- font-awesome icons -->
+        <link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+        <!-- //font-awesome icons -->
 
-<script src="{% static 'js/bootstrap.js' %}"></script>
-<script type="text/javascript">
+        <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$(".scroll").click(function(event){
 			event.preventDefault();
 			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 		});
 	});
-</script>
+        </script>
     </head>
+
     <body>
-            <nav class="navbar navbar-default" style="background: rgb(255, 246, 246);">
-                <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#my-nav" aria-expanded="false">
-                    <span class="sr-only">切换导航条</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">首页</a>
-                </div>
-            
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="my-nav">
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if request.session.is_login %}
-                            <li><a href="#">当前在线:{{ request.session.user_name }}</a></li>
-                            <li><a href="/change_password/">修改密码</a></li>
-                            <li><a href="/information/">个人信息</a></li>
-                            <li><a href="/modify/">修改个人信息</a></li>
-
-                            <li><a href="/logout/">登出</a></li>
-                        {% else %}
-                            <li><a href="/login">登录</a></li>
-                            <li><a href="/register/">注册</a></li>
-                            <li><a href="/reset_password/">重置密码</a></li>
-                        {% endif %}
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
-
-            {% block content %}{% endblock %}
-
-	<!-- footer -->
-	<footer>
-		<div class="container">
-			<div class="agileits-w3layouts-footer-grids">
-				<div class="col-md-4 footer-left">
-					<h3>
-						<a href="/">懂 <span>TA</span></a>
-					</h3>
-					<div class="footer-social-grids">
-						<ul>
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-rss"></i></a></li>
-						</ul>
+        {% block headfirst %}
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="/">懂<span>Ta</span></a>
+						</h1>
 					</div>
 				</div>
-				<div class="col-md-4 footer-left">
-					<h4>快速导航</h4>
-					<div class="col-md-6 footer-grid-left">
+
+                <div class="header-right">
+                <div class="top-nav">
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a class="active" href="/">首页</a></li>
+                                <li><a href="/pet">商品</a></li>
+                                <li class="">
+                                    <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            公告区
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="hvr-bounce-to-bottom" href="icons.html">上传公告区</a></li>
+                                        <li><a class="hvr-bounce-to-bottom" href="typography.html">查看公告区</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="gallery.html">明星宠物墙</a></li>
+                                <li><a href="/aboutus/">关于我们</a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            </ul>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </nav>
+                </div>
+					<div class="agileinfo-social-grids">
 						<ul>
-							<li><a class="active" href="/">主页</a></li>
-							<li><a href="about.html">关于我们</a></li>
-							<li><a href="gallery.html">明星宠物墙</a></li>
-							<li><a href="/#week_news">每周科普</a></li>
-						</ul>
-					</div>
-					<div class="col-md-6 footer-grid-left">
-						<ul>
-							<li><a href="typography.html">精选商品</a></li>
-							<li><a href="blog.html">合作商家</a></li>
+
+
+                            {% if request.session.is_login %}
+                            <li class="new_login_about">
+                                <a href="/orderput">
+                                    <img src="{% static 'login/order.png' %}" class="cart_and_order" id="order_hovers" title="我的订单"/>
+                                </a>
+                            </li>
+                            <li class="new_login_about">
+                                <a href="/collect">
+                                    <img src="{% static 'login/shop_car.png' %}" class="cart_and_order" id="cart_hovers" title="购物车"/>
+                                </a>
+                            </li>
+{# 自己写css#}
+                            <style>
+                                .cart_and_order{
+                                    padding-bottom: 5px;
+                                    margin-right: 10px;
+                                    filter: grayscale(100%);
+                                    opacity: 0.6;
+                                    -webkit-transition-timing-function: ease;
+                                    -webkit-transition-duration: 0.3s;
+                                }
+                                #order_hovers:hover{
+                                    filter: none;
+                                    opacity: 0.8;
+                                }
+                                #cart_hovers:hover{
+                                    filter: none;
+                                    opacity: 0.8;
+                                }
+                            </style>
+                            <li class="new_login_about"><a href="/information/">当前在线:{{ request.session.user_name }}</a></li>
+
+                            <li class="new_login_about"><a href="/change_password/">修改密码</a></li>
+
+
+
+                            <li class="new_login_about"><a href="/logout/">登出</a></li>
+                            {% else %}
+                            <li class="new_login_about"><a href="/login/">登录</a></li>
+                            <li class="new_login_about"><a href="/register/">注册</a></li>
+                            <li class="new_login_about"><a href="/reset_password/">重置密码</a></li>
+                            <li class="new_login_about"><a href="/send_again_register/">重新发送注册邮件验证</a></li>
+
+                            {% endif %}
+{#                            添加css#}
+                        <style>
+                            .new_login_about:hover{
+                                color: #F44336 !important;
+                                background-color: transparent;
+
+                            }
+                            .agileinfo-social-grids ul li a{
+                                font-weight: 600;
+                                text-decoration: none;
+
+                            }
+                            .agileinfo-social-grids ul li a:hover{
+                                color: #F44336 !important;
+
+                            }
+                        </style>
+
+
+
 						</ul>
 					</div>
 					<div class="clearfix"> </div>
-				</div>
-				<div class="col-md-4 footer-left">
-					<h4>为了TA</h4>
-					<p>
-                        终身伴侣,精心呵护
-                        <br/><br/><br/>
-                        终身铲屎
-                    </p>
-
-				</div>
-				<div class="clearfix"> </div>
+            </div>
+                <div class="clearfix"> </div>
 			</div>
 		</div>
-	</footer>
+        {% endblock %}
+
+
+
+
+        {% block content %}{% endblock %}
+
 	<!-- footer -->
+        <footer>
+            <div class="container">
+                <div class="agileits-w3layouts-footer-grids">
+                    <div class="col-md-4 footer-left">
+                        <h3>
+                            <a href="/">懂 <span>TA</span></a>
+                        </h3>
+                        <div class="footer-social-grids">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 footer-left">
+                        <h4>快速导航</h4>
+                        <div class="col-md-6 footer-grid-left">
+                            <ul>
+                                <li><a class="active" href="/">主页</a></li>
+                                <li><a href="/aboutus/">关于我们</a></li>
+                                <li><a href="gallery.html">明星宠物墙</a></li>
+                                <li><a href="/#week_news">每周科普</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 footer-grid-left">
+                            <ul>
+                                <li><a href="typography.html">精选商品</a></li>
+                                <li><a href="blog.html">合作商家</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="col-md-4 footer-left">
+                        <h4>为了TA</h4>
+                        <p>
+                            终身伴侣,精心呵护
+                            <br/><br/><br/>
+                            终身铲屎
+                        </p>
 
-	<script src="{% static 'js/responsiveslides.min.js' %}"></script>
-	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
-	<!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function($) {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear'
-				};
-			*/
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </footer>
+	    <!-- footer -->
 
-			$().UItoTop({ easingType: 'easeOutQuart' });
+	    <script src="{% static 'js/responsiveslides.min.js' %}"></script>
+	    <script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/easing.js'%}"></script>
+	    <!-- here stars scrolling icon -->
+	    <script type="text/javascript">
+            $(document).ready(function($) {
+                /*
+                    var defaults = {
+                    containerID: 'toTop', // fading element id
+                    containerHoverID: 'toTopHover', // fading element hover id
+                    scrollSpeed: 1200,
+                    easingType: 'linear'
+                    };
+                */
 
-			});
-	</script>
+                $().UItoTop({ easingType: 'easeOutQuart' });
+
+                });
+	    </script>
 <!-- //here ends scrolling icon -->
 
 
@@ -158,13 +247,14 @@
 
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-            <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+{#            <script src="{% static 'js/jquery-3.3.1.js' %}"></script>#}
 
             <!-- Include all compiled plugins (below), or include individual files as needed -->        
-            <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{#            <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>#}
 
 
 
-    </body>
+
+</body>
 {% block csslast %}{% endblock %}
 </html>

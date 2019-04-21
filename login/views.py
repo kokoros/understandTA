@@ -142,6 +142,96 @@ def login(request):
         image_url = captcha_image_url(hashkey)
         return render(request, 'login/login.html', locals())
 
+
+#用于判断验证码是否正确 captchaStr为用户输入的字符串 captchaHashkey为此时的哈希值
+def jarge_captcha(captchaStr, captchaHashkey):
+    #如果都有
+    if captchaStr and captchaHashkey:
+        try:
+            # 获取 根据hashkey获取数据库中的response值
+            get_captcha = CaptchaStore.objects.get(hashkey=captchaHashkey)
+            # 如果验证码匹配
+            if get_captcha.response == captchaStr.lower():
+                return True
+        except:
+            return False
+    else:
+        return False
+
+@csrf_exempt
+#获取前端传来的用户字符串和验证码哈希值
+def ajax_captcha(request):
+    #如果是ajax的请求
+    if request.is_ajax():
+        #获取用户输入的字符串
+        captchaStr = request.GET['captcha_1']
+        # print('用户输入:', captchaStr)
+        #获取当前哈希值
+        captchaHashkey = request.GET['captcha_0']
+        # print('当前哈希值:', captchaHashkey)
+        #判断是否匹配
+        if jarge_captcha(captchaStr, captchaHashkey):
+            dic = {
+                'ajax_captcha':'1'
+            }
+            # print('正确!')
+        else:
+            dic = {
+                'ajax_captcha':'0'
+            }
+            # print('错误!')
+        #变成json格式传给前端
+        return HttpResponse(json.dumps(dic), content_type='application/json')
+
+@csrf_exempt
+#用于判断邮箱在不在数据库中
+def ajax_user_email_isalive(request):
+    #如果是ajax请求
+    if request.is_ajax():
+        #接受前端get传来的参数
+        user_email = request.GET['user_email']
+
+        #在数据库中查询 如果找到了
+        same_user = models.User.objects.filter(email=user_email)
+        if same_user:
+            dic = {
+                'ajax_email': '1'
+            }
+            # print('找到了')
+        #如果没找到
+        else:
+            dic = {
+                'ajax_email': '0'
+            }
+            # print('没找到')
+        #变成json格式传给前端
+        return HttpResponse(json.dumps(dic), content_type='application/json')
+
+#判断用户名在不在数据库中
+def ajax_user_name_isalive(request):
+    # 如果是ajax请求
+    if request.is_ajax():
+        # 接受前端get传来的参数
+        user_name = request.GET['user_name']
+        # 在数据库中查询 如果找到了
+        same_user = models.User.objects.filter(name=user_name)
+        if same_user:
+            dic = {
+                'ajax_name': '1'
+            }
+            print('找到了')
+        # 如果没找到
+        else:
+            dic = {
+                'ajax_name': '0'
+            }
+            print('没找到')
+        # 变成json格式传给前端
+        return HttpResponse(json.dumps(dic), content_type='application/json')
+
+
+
+
 #注册
 def register(request):
     if request.method == "POST":
@@ -232,6 +322,8 @@ def register(request):
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
     return render(request, 'login/register.html', locals())
+
+
 
 #保存默认头像
 def save_default_photo(uid,new_user):
@@ -630,35 +722,8 @@ def modify(request):
             user.sex = sex 
             user.petname = petname 
             user.pet_type = pet_type
-            user.intro = intro 
-
-
-            # 如果用户上传了头像
-            if request.FILES.get('new_photo', None):
-                # 获取头像
-                photo_obj = request.FILES['new_photo']
-                #获取文件格式 正则
-                import re
-                l = re.split(r'\.',photo_obj.name)
-                photo_type = l[-1]
-                photo_name = user.name + '.' + photo_type
-                # 替换头像文件
-                try:
-                    destination = open(os.path.join("/home/koro/mysite/media/photo", photo_name),"wb+")
-                    for chunk in photo_obj.chunks():
-                        destination.write(chunk)
-                        
-                except Exception as e:
-                    print('存储文件失败:',e)
-                finally:
-                    destination.close()
-                    photo_obj.close()
-                # 拼接路径
-                photo = "photo/" + user.name + '.' + photo_type
-                #保存图片路径到数据库
-                user.photo = photo
+            user.intro = intro
             #更新数据库数据
-            #数据库中的头像路径也要改变
             user.save()
 
             return render(request, 'login/modify_done.html', locals())
@@ -678,10 +743,16 @@ def modify(request):
     image_url = captcha_image_url(hashkey)
     return render(request, 'login/modify.html', locals()) 
 
+#首页
 def home(request):
     #判断有没有cookies
     judeg_cookies(request)
-    return render(request, 'login/home.html')
+    #查询前三名销量的商品
+    #导入另一个包中的models
+    from polls import models as polls_models
+    #只显示前三个
+    pets = polls_models.Pets.objects.order_by("-pnumber").all()[:3]
+    return render(request, 'login/home.html', locals())
 
 #关于我们
 def aboutus(request):
@@ -700,7 +771,7 @@ def head_photo(request):
         # print(photo)
     except Exception as e:
         print('读取当前用户名错误:',e)
-    return render(request, 'login/head_photo.html',locals())
+    return render(request, 'login/head_photo.html', locals())
 
 # 取消csrf认证
 @csrf_exempt
@@ -746,12 +817,12 @@ def handing_head(request):
             print("图片路径:", user.photo.url)
 
             # 向前端返回一个json，result值是图片路径
-            js_obj = {"result": user.photo.url }
+            js_obj = {"result": user.photo.url}
             return JsonResponse(js_obj)
 
         else:
             return JsonResponse({"msg": "请重新上传。只能上传图片"})
-    #如果不是post请求
+
 
 
 
@@ -876,3 +947,5 @@ def send_again_register(request):
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
     return render(request, 'login/send_again_register.html', locals())
+
+

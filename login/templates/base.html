@@ -71,7 +71,7 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a class="active" href="/">首页</a></li>
-                                <li><a href="about.html">商品</a></li>
+                                <li><a href="/pet">商品</a></li>
                                 <li class="">
                                     <a href="#" class="dropdown-toggle hvr-bounce-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             公告区
@@ -84,6 +84,7 @@
                                 </li>
                                 <li><a href="gallery.html">明星宠物墙</a></li>
                                 <li><a href="/aboutus/">关于我们</a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             </ul>
                             <div class="clearfix"> </div>
                         </div>
@@ -91,12 +92,42 @@
                 </div>
 					<div class="agileinfo-social-grids">
 						<ul>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+
 
                             {% if request.session.is_login %}
+                            <li class="new_login_about">
+                                <a href="/orderput">
+                                    <img src="{% static 'login/order.png' %}" class="cart_and_order" id="order_hovers" title="我的订单"/>
+                                </a>
+                            </li>
+                            <li class="new_login_about">
+                                <a href="/collect">
+                                    <img src="{% static 'login/shop_car.png' %}" class="cart_and_order" id="cart_hovers" title="购物车"/>
+                                </a>
+                            </li>
+{# 自己写css#}
+                            <style>
+                                .cart_and_order{
+                                    padding-bottom: 5px;
+                                    margin-right: 10px;
+                                    filter: grayscale(100%);
+                                    opacity: 0.6;
+                                    -webkit-transition-timing-function: ease;
+                                    -webkit-transition-duration: 0.3s;
+                                }
+                                #order_hovers:hover{
+                                    filter: none;
+                                    opacity: 0.8;
+                                }
+                                #cart_hovers:hover{
+                                    filter: none;
+                                    opacity: 0.8;
+                                }
+                            </style>
                             <li class="new_login_about"><a href="/information/">当前在线:{{ request.session.user_name }}</a></li>
+
                             <li class="new_login_about"><a href="/change_password/">修改密码</a></li>
-                            <li class="new_login_about"><a href="/modify/">修改个人信息</a></li>
+
 
                             <li class="new_login_about"><a href="/logout/">登出</a></li>
                             {% else %}

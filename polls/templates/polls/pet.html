@@ -1,19 +1,44 @@
 {% extends 'base.html' %}
-{% block title %}宠物展示{% endblock %}
+{% block title %}商品{% endblock %}
 
 {% block css %}
 
 <style>
-        #body{
-                background-color:#89BDCA;
-        }
+    #allcontent{
+        margin: 3% 10%;
+        text-align: center;
+        color: rgb(153, 79, 79);
+    }
+    #allcontent a{
+        color: rgb(153, 79, 79);
+        text-decoration: none;
+    }
+    #allcontent a:hover{
+        color: rgb(255, 0, 0);
+    }
+
+   .ser{
+        background-color: rgba(206, 176, 176, 0.3);
+        margin: 10px auto;
+        border: 1px solid whitesmoke;
+        height: 40px;
+        border-radius: 10px;
+        padding: 5px 10px;
+   }
+   #form{
+       text-align:center;
+       margin: 0 auto;
+       width: 80%;
+       height: 80px;
+       }
+
         #content{
        margin: 0 auto;
        height: 650px;
        position: relative;
        }
        .forcont{
-           width: 300px;
+           width: 270px;
            height: 330px;  
            float: left; 
            background-image: url('/static/images/h.jpg ');
@@ -29,15 +54,10 @@
                width: 200px;
        }
 
-       #form{
-               margin: 0 auto;
-               width: 80%;
-               height: 40px;
-       }
-       .ser{
-        background-color:#89BDCA;
-        }
+
+
        ＃foot{
+           text-align:center;
                margin: 0 auto;
                height: 30px;
                position:absolute;
@@ -52,24 +72,26 @@
        #aname{
                text-decoration: none;
        }
-       </style>
 
+
+
+       </style>
 {% endblock %}
 
 {% block content %}
 
-<div id='body'>
+
 <!-- 整个容器 -->
 <div id='allcontent'>
         <!-- 查询容器 -->
 <div id='forms'>
 <form align='center'  id='form' action="/query" method="GET">
-<input class="ser" type='text' name="query">
-<input class="ser" type="submit" value="查询">
+<input class="ser" type='text' name="query" placeholder="请输入您要搜索的内容">
+<input class="ser" type="submit" value="查询"> 　
 </form>
 </div>
  <!-- 动态数据展示 -->
-<div align='center' id='content' style="width:90%;">
+<div align='center' id='content'>
 {% if posts%}
  {% for pr in posts %}   
  <!-- 循环数据 -->
@@ -77,21 +99,21 @@
         <img id='imgp' src="{% static pr.ppath %}" >
         <br>  
         <p id='p1' class="con">
-        收藏量:{{pr.pnumber}}  &nbsp;&nbsp; 
-        <a href='?collect={{pr.id}}'>收藏</a>
+        销量:{{pr.pnumber}}  &nbsp;&nbsp; 
+        <a style="text-decoration: none;" href='goodadd?collect={{pr.id}}'>加入购物车</a>
         </p>
         <p  id='p2' class="con">
-            种类:&nbsp;&nbsp;  {{pr.Ptype}} 
+        {{pr.ptype}}&nbsp;&nbsp;  {{pr.pprice}}
        </p>
         <p id='p3' class="con"> 
-      <a   id='aname'  href='' > {{pr.pname}}  </a>
+      <a id='aname'  href='petdetail?detailid={{pr.id}}' > {{pr.pname}}  </a>
         </p>
 </div>
 {% endfor %}
 {% endif %}
 </div>
 <!-- 分页控制 -->
- <div　id='foot'>　
+ <div id='foot'>　
 <span id='fenye'>
         {% if posts.has_previous %}
         <a href="?page={{ posts.previous_page_number }}">上一页</a>
@@ -104,7 +126,6 @@
         {% endif %}
 </span>
 </div> 
-</div>
 </div>
 
 {% endblock %}

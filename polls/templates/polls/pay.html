@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}支付{% endblock %}
+
+{% block css %}
+
+<style>
+    #allcontent{
+        margin: 3% 10%;
+        text-align: center;
+        color: rgb(153, 79, 79);
+        height:100px;
+    }
+    #allcontent a{
+        color: rgb(153, 79, 79);
+    }
+    #allcontent a:hover{
+        color: rgb(255, 0, 0);
+    }
+       p{
+               margin:1px 0px;
+       }
+       #form{
+               margin: 0 auto;
+               width: 80%;
+               height: 40px;
+               align-self: auto;             
+       }
+       .ser{
+            background-color: rgba(206, 176, 176, 0.3);
+            margin: 10px auto;
+            border: 1px solid whitesmoke;
+            height: 40px;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+       </style>
+{% endblock %}
+
+{% block content %}
+<!-- 整个容器 -->
+<div id='allcontent'>
+        <!-- 查询容器 -->
+<div  align='center' id='forms'>
+<form  align='center' id='form' action="/orderpay" method="POST">
+{% csrf_token %}
+<input class="ser" type='password' name="paw">
+<input class="ser" type='hidden' name="olid" value="{{ request.GET.urlencode }}" ><br>
+<input class="ser" type="submit" value="确认支付">
+</form>
+</div> 
+</div>
+
+{% endblock %}

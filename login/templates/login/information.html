@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <div class="lowin lowin-red" style="height:600px;background:url({% static 'login/mycat2.jpg' %})">
+    <div class="lowin lowin-red" style="height:700px;background:url({% static 'login/mycat2.jpg' %})">
 		<div class="lowin-brand">
 			<img src="{{ MEDIA_URL }}{{ photo }}" alt="photo">
 		</div>
@@ -30,6 +30,12 @@
                         <br/><br/>
                         <label>个性签名:{{ intro }}</label>
                         <br/><br/>
+                        <a href="/modify/">
+                            <button type="submit" class="lowin-btn login-btn">
+							修改个人资料
+						    </button>
+                        </a>
+
                     </div>
                 </div>
             </div>

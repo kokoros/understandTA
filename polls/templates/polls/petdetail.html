@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}商品详情{% endblock %}
+
+{% block css %}
+
+<style>
+
+    #allcontent{
+        margin: 3% 10%;
+        text-align: center;
+        color: rgb(153, 79, 79);
+        height:300px;
+    }
+       .im{
+               width: 150px;
+               height: 150px;
+               float: left;
+
+       }
+       p{
+               font-size: 20px;
+       }
+       .fon{
+           font-size: 30px;
+       }
+       .aa{
+           text-decoration: none;
+       }
+       </style>
+{% endblock %}
+
+{% block content %}
+
+{#<!-- 整个容器 -->#}
+<div id='allcontent'>
+{#        <!-- 查询容器 -->#}
+{# <table width='100%' cellspacing='20px' >#}
+{#         <tr  align='center'  >#}
+{#                 <th>图片</th>#}
+{#                 <th> 描述</th>#}
+{#                 <th>单价</th>#}
+{#                 <th>数量</th>#}
+{#                 <th>金额</th>#}
+{#                 <th>操作</th>#}
+{#         </tr>#}
+{#         {% if posts%}#}
+{#         {% for pr in posts %} #}
+{#         <tr>  #}
+{#         <td> <img class="im" src='{{pr.ppath}}'></td>#}
+{#         <td> {{pr.pname}}</td>#}
+{#         <td>{{pr.pprice}} </td>#}
+{#         <td><a  class="sa" href="?sid={{pr.id}}">减少</a>{{pr.cnumber}}<a class="sa" href='?aid={{pr.id}}'>增加</a> </td>#}
+{#         <td> {{pr.ptype}}</td>#}
+{#         <td><a href='?did={{pr.id}}'>删除</a> <a href='orders?jid={{pr.id }}'>下单</a> </td>#}
+{#         </tr>#}
+{#         {% endfor %}#}
+{#{% endif %}#}
+{# </table> #}
+ {% if posts%}
+ {% for pr in posts %} 
+<table  width='100%'  border="1px">
+    <tr   align='center'  >
+        <th colspan="2" rowspan="2"><img class='im' src='{% static pr.ppath %}'></th>
+        <th class="fon" colspan="4">{{ pr.pname }}</th>
+</tr>
+<tr  align='center'  >
+    <th  class="fon" colspan="2">惊爆价：{{pr.pprice}}</th>
+    <th class="fon" colspan="2">日销量：{{pr.pnumber}} </th>
+{#    <!-- <th>金额</th>#}
+{#    <th>操作</th> -->#}
+</tr>
+<tr  align='center'  >
+    <th  class="fon" colspan="2">产品类型：{{pr.ptype}}</th> 
+    <th class="fon" colspan="2"><a class="aa" href="deorders?jid={{pr.id }}">下单</a></th>
+    <th class="fon" colspan="2"><a class="aa" href="degoodadd?collect={{pr.id}}">加入购物车</a></th>
+</tr>
+<tr  align='center'  >
+    <th colspan="6">产品详细描述：{{pr.pdescribe}}</th>
+</tr>
+</table>
+
+{% endfor %}
+{% endif %}
+
+</div>
+{% endblock %}
