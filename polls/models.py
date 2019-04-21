@@ -61,3 +61,7 @@ class Order(models.Model):
     otime = models.CharField(max_length=200, null=True)
     oenable = models.IntegerField(default=0, null=True)
     opath = models.CharField(max_length=200, null=True)
+    ohandle1=models.CharField(max_length=200,null=True) #订单支付
+    ohandle2=models.CharField(max_length=200,null=True) #订单删除
+    ohandle3=models.CharField(max_length=200,null=True)#确认收货
+    ohandle4=models.CharField(max_length=200,null=True)#退货order;

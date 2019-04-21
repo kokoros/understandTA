@@ -154,10 +154,11 @@ def orderput(request):
         oprice=col[0].callprice
         onum=col[0].cnumber
         opath=col[0].cpath
-        otime=time.strftime("%Y-%m-%d %X")         
-        
+        otime=time.strftime("%Y-%m-%d %X")
+
         adord = Order(cid=ocid, uname=uname, oname=oname, oprice=oprice, onum=onum, oaddress=add, ouser=ouser,
-                      ophone=pho, otime=otime, oenable=0, ostatue=0, opath=opath, odesc='未支付')
+                      ophone=pho, otime=otime, oenable=0, ostatue=0, opath=opath, odesc='未支付', ohandle1='支付',
+                      ohandle2='删除', ohandle3='')
         adord.save()
         coll = Collect.objects.get(id=ocid)
         coll.cenable = -2  # 购物车到订单状态调整
@@ -211,9 +212,12 @@ def payresult(request):
         orde = Order.objects.get(id=olid)
         uname = request.session['user_name']
         if paw == pawss:
-            print('正确')
-            orde.odesc = '待发货'
+            orde.odesc='待发货'
+            orde.ohandle1=''
+            orde.ohandle2=''
+            orde.ohandle3='确认收货'      
             orde.save()
+            
             posts = Order.objects.filter(uname=uname, oenable=0)
             data = {'posts': posts}
             return render(request, 'polls/orderlist.html', context=data)
@@ -270,7 +274,7 @@ def orderputde(request):
         onum=1
         opath=col[0].ppath
         otime=time.strftime("%Y-%m-%d %X")
-        adord=Order(cid=ocid,uname=uname,oname=oname,oprice=oprice,onum=onum,oaddress=add,ouser=ouser,ophone=pho,otime=otime,oenable=0,ostatue=1,opath=opath,odesc='未支付')
+        adord=Order(cid=ocid,uname=uname,oname=oname,oprice=oprice,onum=onum,oaddress=add,ouser=ouser,ophone=pho,otime=otime,oenable=0,ostatue=1,opath=opath,odesc='未支付',ohandle1='支付',ohandle2='删除',ohandle3='')
         adord.save()    
     posts=Order.objects.all().filter(uname=uname,oenable=0)[:6]
     data={'posts':posts}
@@ -386,7 +390,20 @@ def coldel(request):
     print('ind')
     return render(request,'polls/collect.html',{'posts':posts})
 
-
+# 支付后
+def oresult(request):
+    if 'oqid' in request.GET: #更新状态不做删除
+        did=request.GET['oqid']
+        ordd=Order.objects.get(id=did)
+        ordd.ohandle1=''
+        ordd.ohandle2='关闭订单'
+        ordd.ohandle3=''
+        ordd.odesc='已经收货'
+        ordd.save()
+    username = request.session['user_name']
+    posts=Order.objects.all().filter(uname=username,oenable=0)[:6]
+    data={'posts':posts}
+    return  render(request,'polls/orderlist.html',context=data)
 
 
 

@@ -90,6 +90,7 @@ urlpatterns = [
     path(r'colles', polls_views.colles),
     path(r'coladd', polls_views.coladd),
     path(r'coldel', polls_views.coldel),
+    path(r'oresult', polls_views.oresult),
 
 
 ]

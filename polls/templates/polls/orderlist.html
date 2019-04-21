@@ -126,7 +126,13 @@
          <td>{{pr.oaddress}}</td>
          <td>{{pr.ouser}}</td>
          <td>{{pr.ophone}}</td>
-         <td><a href='delorder?odid={{pr.id}}' >删除</a> <a href='pay?opid={{pr.id }}' 支付</a> </td>
+         <td>
+             <a class="handle" href="pay?opid={{pr.id}}">{{pr.ohandle1}}</a>
+             <a class="handle" href='oresult?oqid={{pr.id}}'>{{pr.ohandle3}}</a>
+             <a class="handle" href='delorder?odid={{pr.id}}'>{{pr.ohandle2}}</a>
+                  
+            
+         </td>
          </tr>
          {% endfor %}
 {% endif %}
