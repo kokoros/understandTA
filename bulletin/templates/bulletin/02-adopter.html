@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}发布领养公告{% endblock %}
+{% block css %}
+
+    <style>
+        #bulletin_border{
+            text-align: center;
+        }
+        #t1{
+            width: 80%;
+            height: 500px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div id="bulletin_border">
+
+<form action="/02-server/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>
+        标题：<input type="text" name="title">
+    </p>
+    <p>
+        领养宠物种类：
+        <input type="checkbox" name="type" value="td">泰迪
+        <input type="checkbox" name="type" value="jm">金毛
+        <input type="checkbox" name="type" value="hsq">哈士奇
+        <input type="checkbox" name="type" value="alsj">阿拉斯加犬
+        <input type="checkbox" name="type" value="ygdnq">英国斗牛犬
+        <input type="checkbox" name="type" value="qt">其他
+    </p>
+    <p>
+        <textarea id="t1" name="main"></textarea>
+    </p>
+    <p>
+        地区：<select class="a1" name="area">
+        <option>北京</option>
+        <option>上海</option>
+        <option>武汉</option>
+        <option>广州</option>
+        <option>深圳</option>
+        <option>成都</option>
+    </select>
+    </p>
+    <p>
+        图片：<input type="file" name="pic" style="margin-left: 40%;">
+    </p>
+    <p>
+        <input type="submit" value="提交">
+    </p>
+</form>
+    </div>
+{% endblock %}

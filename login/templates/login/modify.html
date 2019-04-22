@@ -35,6 +35,13 @@
                     }else{
                         $("#user_name_alive").html('')
                     }
+
+                    //如果长度不合规
+                    if(data.ajax_name_len == '0'){
+                        $("#user_name_len").html('用户名长度在2-15字符间')
+                    }else{
+                        $("#user_name_len").html('')
+                    }
                 })
             });
 
@@ -87,6 +94,7 @@
                                     <label>{{ modify_form.username.label_tag }}</label>
                                     {{ modify_form.username }}
                                      <span id="user_name_alive" style="color:rgb(255, 0, 0);"></span>
+                                     <span id="user_name_len" style="color:rgb(255, 0, 0);"></span>
                                 </div>
                                 <div class="lowin-group">
                                     <label>{{ modify_form.sex.label_tag }}</label>

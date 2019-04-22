@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}公告区{% endblock %}
+{% block css %}
+
+    <style>
+        #d1 a{
+            display: block;
+            background-color: rosybrown;
+            width: 100%;
+            height: 50px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 32px;
+            color: aliceblue;
+        }
+        #d2 a{
+            display: block;
+            background-color: burlywood;
+            width: 100%;
+            height: 50px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 32px;
+            color: aliceblue;
+        }
+        .slide a{
+            display: block;
+            background-color: beige;
+            width: 100%;
+            height: 280px;
+            text-decoration: none;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+{#    最外层div#}
+<div style="height:800px;">
+<div id="d1">
+     <a href="/02-adopter">发布领养文章</a>
+</div>
+<div id="d2">
+    <a href="/03-publish_notices">发布寻宠启示</a>
+</div>
+<div id="banner" class="fader">
+    {% for pet in find_pet %}
+    <div class="slide">
+        <a href="/info?id={{pet.id}}" target="">
+            <div>
+            <img src="{% static pet.pic %}" style="height: 280px;"/>
+            <span class="imginfo" >
+                {{ pet.title }}
+            </span>
+            <span>
+            {{ pet.main }}
+            </span>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+{% endblock %}

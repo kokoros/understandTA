@@ -10,7 +10,7 @@ class User(models.Model):
         ('unkown','不详')
     )
 
-    name = models.CharField(max_length=128,unique=True)
+    name = models.CharField(max_length=128,unique=True, db_index=True)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=32,choices=gender, default="不详")

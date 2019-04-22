@@ -211,21 +211,25 @@ def ajax_user_email_isalive(request):
 def ajax_user_name_isalive(request):
     # 如果是ajax请求
     if request.is_ajax():
+        dic = {}
         # 接受前端get传来的参数
         user_name = request.GET['user_name']
+        #如果用户名长度大于10或小于2
+        if len(user_name) > 15 or len(user_name) < 2:
+            dic = {
+                'ajax_name_len': '0'
+            }
+
         # 在数据库中查询 如果找到了
         same_user = models.User.objects.filter(name=user_name)
         if same_user:
-            dic = {
-                'ajax_name': '1'
-            }
-            print('找到了')
+            #字典里增加一个键
+            dic['ajax_name'] = '1'
+            # print('找到了')
         # 如果没找到
         else:
-            dic = {
-                'ajax_name': '0'
-            }
-            print('没找到')
+            dic['ajax_name'] = '0'
+            # print('没找到')
         # 变成json格式传给前端
         return HttpResponse(json.dumps(dic), content_type='application/json')
 
@@ -255,6 +259,11 @@ def register(request):
                 return render(request, 'login/register.html', locals())
             elif len(password1) < 6 or len(password1) > 12:
                 message = "密码长度在6-12个字符间"
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
+                return render(request, 'login/register.html', locals())
+            elif len(username) > 15 or len(username) < 2:
+                message = "用户名长度必须在2-15字符间"
                 hashkey = CaptchaStore.generate_key()
                 image_url = captcha_image_url(hashkey)
                 return render(request, 'login/register.html', locals())
@@ -717,6 +726,11 @@ def modify(request):
                     hashkey = CaptchaStore.generate_key()
                     image_url = captcha_image_url(hashkey)
                     return render(request, 'login/modify.html', locals())
+            if len(username) < 2 or len(username) > 15:
+                message = "用户名长度必须在2-15字符间"
+                hashkey = CaptchaStore.generate_key()
+                image_url = captcha_image_url(hashkey)
+                return render(request, 'login/modify.html', locals())
             #一切都ok时,改变数据库
             user.name = username
             user.sex = sex 
@@ -758,7 +772,7 @@ def home(request):
 def aboutus(request):
     return render(request, 'login/aboutus.html')
 
-# 试验上传并裁剪图片
+# 上传并裁剪图片
 def head_photo(request):
     try:
         #获取此时登录的用户名
@@ -775,7 +789,7 @@ def head_photo(request):
 
 # 取消csrf认证
 @csrf_exempt
-#试验处理裁剪图片的提交
+#处理裁剪图片的提交
 def handing_head(request):
     try:
         #获取此时登录的用户名

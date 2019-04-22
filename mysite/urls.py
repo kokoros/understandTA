@@ -25,6 +25,9 @@ from django.conf import settings
 #导入polls文件夹中的views,重命名为polls_views
 from polls import views as polls_views
 
+#导入公告views
+from bulletin import views as bulletin_views
+
 
 
 urlpatterns = [
@@ -92,7 +95,12 @@ urlpatterns = [
     path(r'coldel', polls_views.coldel),
     path(r'oresult', polls_views.oresult),
 
-
+    #导入公告
+    path('01-Find_pet/', bulletin_views.views),
+    path('02-adopter/', bulletin_views.adopt),
+    path('02-server/', bulletin_views.server02),
+    path('03-server/', bulletin_views.server03),
+    path('03-publish_notices/', bulletin_views.publish),
 ]
 
 if settings.DEBUG:
