@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}明星宠物墙{% endblock %}
+{% block css %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'gellary/css/style.css' %}">
+
+    <script src="/gellary/static/js/jquery-1.11.3.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div id="container">    
+        <div class="c0">
+            <p>
+                <img src="{% static 'gellary/images/background.jpg' %}" >
+            </p>
+        </div>
+        <p class="c1">
+            <form action="/gellary/index/" method="post">
+                {%csrf_token%}
+                <input type="text" name="pname" placeholder="宠物名">
+                <input type="submit" value="查询">
+            </form>
+        </p>
+        <a href="/gellary/liuyans" style="text-decoration:none;">
+            <input type="button" value="留言">
+        </a>
+        <a href="/gellary/queryliuyans" style="text-decoration:none;">
+            <input type="button" value="查看留言">
+        </a>
+        <div class="c2">
+            <p id="d1">
+                <a href="/gellary/changjiangyihao" class="fir">
+                    <img src="{% static 'gellary/images/001bu.jpg' %}" ><label>小米</label>
+                </a>    
+            </p>
+            <p id="d2">
+                <a href="/gellary/changjiangerhao">
+                    <img src="{% static 'gellary/images/003bu.jpg' %}" ><label>木木</label>
+                </a>
+            </p>
+            <p id="d3">
+                <a href="/gellary/changjiangsanhao">
+                    <img src="{% static 'gellary/images/002bu.jpg' %}" ><label>妙妙</label>
+                </a>
+            </p>
+            <p id="d4">
+                <a href="/gellary/changjiangsihao">
+                    <img src="{% static 'gellary/images/002ha.jpg' %}" ><label>小黑</label>
+                </a>
+            </p>
+        </div>
+        <div class="c3">
+            <p id="d5">
+                <a href="/gellary/changjiangwuhao">
+                    <img src="{% static 'gellary/images/001ha.jpg' %}" ><label>小黄</label>
+                </a>
+            </p>
+            <p id="d6">
+                <a href="/gellary/changjiangliuhao">
+                    <img src="{% static 'gellary/images/003ha.jpg' %}" ><label>艾克</label>
+                </a>
+            </p>
+            <p id="d7">
+                <a href="/gellary/changjiangqihao">
+                    <img src="{% static 'gellary/images/004zh.jpg' %}" ><label>汤姆</label>
+                </a>
+            </p>
+            <p id="d8">
+                <a href="/gellary/changjiangbahao">
+                    <img src="{% static 'gellary/images/004tu.jpg' %}" ><label>杰瑞</label>
+                </a>
+            </p>
+        </div>
+        
+    </div>    
+
+
+
+    <!-- {% if user_list %}
+        {% for user in user_list %}
+            <li>{{user.pname}}</li>
+        {% endfor %}
+    {% else %}
+        <strong>没有用户数据</strong>
+    {% endif %} -->
+
+{% endblock %}

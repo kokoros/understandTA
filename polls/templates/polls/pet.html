@@ -41,7 +41,7 @@
            width: 270px;
            height: 330px;  
            float: left; 
-           background-image: url('/static/images/h.jpg ');
+           {#background-image: url('/static/images/h.jpg ');#}
        }
        #imgp{
                width: 200px;
@@ -95,11 +95,11 @@
 {% if posts%}
  {% for pr in posts %}   
  <!-- 循环数据 -->
-<div class="forcont"> 
+<div class="forcont">
         <img id='imgp' src="{% static pr.ppath %}" >
         <br>  
         <p id='p1' class="con">
-        销量:{{pr.pnumber}}  &nbsp;&nbsp; 
+        销量:{{pr.pnumber}}  &nbsp;&nbsp;
         <a style="text-decoration: none;" href='goodadd?collect={{pr.id}}'>加入购物车</a>
         </p>
         <p  id='p2' class="con">

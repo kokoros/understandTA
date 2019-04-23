@@ -1,0 +1,36 @@
+body{
+    height: 1000px;
+    
+}
+.c2,.c3{
+    width: 1371px;
+    height: 300px;
+    position: relative;
+}
+.c0 p img{
+    margin-top:0;
+    width:1371px;
+    height:60px;
+}
+.c2 img,.c3 img{
+    margin-top:80px; 
+    float: left;
+    position: absolute;
+    width:315px;
+    height:168px;
+}
+
+
+#d1,#d2,#d3,#d4,#d5,#d6,#d7,#d8{
+    float: left;
+    width:315px;
+    height:168px;   
+}
+
+.c2 p,.c3 p{
+    margin: 10px;
+}
+
+.cc{
+    float: right;
+}

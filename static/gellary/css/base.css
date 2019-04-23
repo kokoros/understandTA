@@ -1,0 +1,23 @@
+/* 页面的基础样式 */
+h1,h2,h3,h4,h5,h6,p,ul,ol{
+    margin:0;
+    padding: 0;
+    list-style: none;
+}
+body{
+    font:12px youyuan,Arial;
+    color:#ccc;
+    background: #F1F3F4;
+}
+a{
+    color:#ccc;
+    text-decoration: none;
+}
+input:focus{
+    outline: none;
+}
+/* 外部容器的样式 */
+#container{
+    width:1371px;
+    margin:0 auto;
+}

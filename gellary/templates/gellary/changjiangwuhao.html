@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}详细信息{% endblock %}
+{% block css %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'gellary/css/001.css' %}"
+    <script src="{% static 'gellary/js/jquery-1.11.3.js'%}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    <span class="fir">
+        <img src="{% static 'gellary/images/001ha.jpg' %}">
+    </span>
+    <li>姓名：{{pname.pname}}</li>
+    <li>注册时间：{{pname.pdate}}</li>
+    <li>年龄：{{pname.page}}岁</li>
+    <li>类型：{{pname.ptype}}</li>
+    <li>性别：{{pname.psex}}</li>
+    <li>简介：{{pname.pintro}}</li>
+
+{% endblock %}
+

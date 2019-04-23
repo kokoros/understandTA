@@ -29,6 +29,10 @@ class Pets(models.Model):
     pprice = models.FloatField(null=True)
     penable = models.IntegerField(default=0, null=True)
 
+    class Meta:
+        # 排序
+        ordering = ["id"]
+
 
 class Collect(models.Model):
     pid = models.IntegerField()

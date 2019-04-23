@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}详细信息{% endblock %}
+{% block css %}
+    <script src="main.js"></script>  -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/001.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div>
+    {% if user %}
+        <span class="fir">
+            <img src="{% static user.photo %}">
+        </span> 
+        <li>姓名：{{user.pname}}</li>
+        <li>注册时间：{{user.pdate}}</li>
+        <li>年龄：{{user.page}}岁</li>
+        <li>类型：{{user.ptype}}</li>
+        <li>性别：{{user.psex}}</li>
+        <li>简介：{{user.pintro}}</li>
+    {% else %}
+        <li>saaasfsfsssf</li>
+    {% endif %}
+    </div>
+    
+{% endblock %}

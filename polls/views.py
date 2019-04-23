@@ -60,17 +60,10 @@ def goodadd(request):
         petnew = Pets.objects.get(id=pid)
         petnew.pnumber = pnumnew
         petnew.save()
-    pet = Pets.objects.all()[:100]
-    page = request.GET.get('page')
-    pagin = Paginator(pet, 8)
-    try:
-        posts = pagin.page(page)
-    except PageNotAnInteger:
-        posts = pagin.page(1)
-    except EmptyPage:
-        posts = pagin.page(pagin.num_pages)
-    data = {'posts': posts}
-    return render(request, 'polls/pet.html', context=data)
+    uname = request.session['user_name']
+    posts=Collect.objects.all().filter(uname=uname,cenable=0)[:6]
+    data={'posts':posts}
+    return render(request,'polls/collect.html',context=data)
 
 
 # 根据名称模糊查询
@@ -285,7 +278,7 @@ def degoodadd(request):
     #判断用户是否登录
     if not request.session.get('is_login', None):
         return redirect("/login")
-    if 'collect' in  request.GET:#判断是否有添加到购物车请求
+    if 'collect' in request.GET:#判断是否有添加到购物车请求
         pid=request.GET['collect']
         collectone=Collect.objects.filter(pid=pid,cenable=0)  #
         print('collect',collectone)
@@ -353,7 +346,7 @@ def coladd(request):
     if not request.session.get('is_login', None):
         return redirect("/login")
             
-    if  'aid' in request.GET:
+    if 'aid' in request.GET:
         aid=request.GET['aid']
         print('sid')
         coll=Collect.objects.filter(id=aid)

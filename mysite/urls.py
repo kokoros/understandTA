@@ -101,6 +101,9 @@ urlpatterns = [
     path('02-server/', bulletin_views.server02),
     path('03-server/', bulletin_views.server03),
     path('03-publish_notices/', bulletin_views.publish),
+
+    #导入明星宠物墙
+    path('gellary/', include('gellary.urls')),
 ]
 
 if settings.DEBUG:

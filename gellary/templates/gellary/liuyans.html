@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}详细信息{% endblock %}
+
+
+{% block content %}
+    {% if user %}
+    <form action="/gellary/liuyans/" method="post" class="new_user">
+        {%csrf_token%}
+        <input type="text" name="uname" placeholder="用户名"><br>
+        <input type="text" name="ubbs" placeholder="留言"><br>
+        <input type="submit" value="提交">
+    </form>
+    {% else %}
+        <strong>请先注册！！</strong>
+    {% endif %}
+
+{% endblock %}

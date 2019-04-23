@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}查看留言板{% endblock %}
+
+{% block content %}
+
+    <form action="/gellary/queryliuyans/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="uname" value="">
+        <input type="submit" value="查询">
+    </form>
+    {% for u in uname %}
+    <li>姓名：{{u.uname}}</li>
+    <li>留言：{{u.ubbs}}</li>
+    <li>时间：{{u.pub_date}}</li>
+    {% endfor %}
+
+{% endblock %}

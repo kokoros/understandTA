@@ -6,8 +6,7 @@ from login import forms
 import hashlib
 import datetime
 from django.conf import settings
-#导入文件系统
-from django.core.files.storage import FileSystemStorage
+
 import os
 #导入验证码模块
 from captcha.models import CaptchaStore
