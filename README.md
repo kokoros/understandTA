@@ -20,9 +20,9 @@ Prerequisites(先决条件)
 Running the tests
 -----------------
 * 打开chrome firefox 等浏览器
-* 输入网址:http://127.0.0.1:8000/admin 
+* 本地测试：输入网址:http://127.0.0.1:8000/admin 
 或http://127.0.0.1:8000/login
-(网站仍在开发中)
+* 服务器测试：understandta.com
 
 Built With
 ------
@@ -30,6 +30,4 @@ Built With
 * python3
 * bootstrap3
 
-Authors
------------
 
